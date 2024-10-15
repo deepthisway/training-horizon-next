@@ -1,28 +1,29 @@
 // components/CourseCard.tsx
 "use client";
-import { useSelector } from 'react-redux';
-import { RootState } from '@/lib/store/store';
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store/store";
 import React, { useEffect, useState } from "react";
 import ReplyToListing from "./ReplyToListing";
-import MapWidget from './MapWidget';
-import axios from 'axios';
+import MapWidget from "./MapWidget";
+import axios from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
 
 function SideLayout() {
-  
   const [name, setName] = useState("user");
-  useEffect(()=>{
-    axios.get("http://localhost:3005/api/v1/user/username",{
-      headers:{
-        Authorization:"Bearer "+ window.localStorage.getItem("token")
-      }
-    }).then((res)=> setName(res.data.user))
-  },[name])
-  
+  useEffect(() => {
+    axios
+      .get("http://localhost:3005/api/v1/user/username", {
+        headers: {
+          Authorization: "Bearer " + window.localStorage.getItem("token"),
+        },
+      })
+      .then((res) => setName(res.data.user));
+  }, [name]);
+
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(5);
   const [activeTab, setActiveTab] = useState<string>("Overview");
   const [isOpen, setIsOpen] = useState(false);
-
 
   const form = useSelector((state: RootState) => state.form);
   const tabs = ["Overview", "Instructors", "Curriculum", "Reviews", "FAQs"];
@@ -30,16 +31,21 @@ function SideLayout() {
   const openPopup = () => setIsOpen(true);
   const closePopup = () => setIsOpen(false);
 
+  const router = useRouter();
+
   const handleSubmit = async (e: React.FormEvent) => {
     closePopup();
     e.preventDefault();
-    const response = await fetch("http://localhost:3005/api/v1/review/reviews", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, review, rating }),
-    });
+    const response = await fetch(
+      "http://localhost:3005/api/v1/review/reviews",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, review, rating }),
+      }
+    );
     if (response.ok) {
       alert("Review submitted!");
       setName("");
@@ -49,6 +55,9 @@ function SideLayout() {
       alert("Error submitting review.");
     }
   };
+  const movetocheckout = () => {
+    
+  };
   return (
     <>
       {/* Right Section: Class Details */}
@@ -56,10 +65,21 @@ function SideLayout() {
         <div className="w-80 mx-auto p-4">
           {/* Price Section */}
           <div className="bg-white rounded-md shadow p-4 text-center mb-4">
-            <p className="text-lg font-medium">${form.price} {form.priceMode || "per month"}</p>
+            <p className="text-lg font-medium">
+              ${form.price} {form.priceMode || "per month"}
+            </p>
           </div>
 
           {/* Button Section */}
+          <button
+            onClick={() => {
+              router.push(`/checkout`);
+            }}
+            className="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-3 rounded-md shadow mb-4"
+          >
+            Buy Now
+          </button>
+
           <ReplyToListing />
 
           {/* Pop-Up Card */}
@@ -92,7 +112,7 @@ function SideLayout() {
                   >
                     Cancel
                   </button>
-                  
+
                   <button
                     onClick={handleSubmit}
                     className="px-4 py-2 bg-[#17A8FC] hover:bg-blue-500 text-white rounded-md"
@@ -104,7 +124,6 @@ function SideLayout() {
               </div>
             </div>
           )}
-        
 
           {/* Review and Report Section */}
           <div className="bg-white rounded-md shadow p-4 text-center mb-4">
