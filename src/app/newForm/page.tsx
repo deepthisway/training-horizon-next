@@ -13,6 +13,9 @@ interface Trainer {
   phone: string;
   address: string;
   availability: string[];
+  about: string;
+  workHistory: string;
+  educationDetail: string;
 }
 
 const TrainerList: React.FC = () => {

@@ -18,6 +18,7 @@ import { Input } from "@/components/trainer-dashboard/ui/input";
 import Popup from "./PopUp";
 import { Card, CardContent} from './ui/card'
 import Image from 'next/image'
+import { Textarea } from "./ui/textarea";
 
 export function TrainerForm() {
   const [popupVisible, setPopupVisible] = useState(false);
@@ -50,6 +51,15 @@ export function TrainerForm() {
     availability: z.array(z.string()).optional(),
     password: z.string().min(1, {
       message: "Please enter a valid password",
+    }),
+    about: z.string().min(100, {
+      message: "Minimum length required is 100",
+    }),
+    workHistory: z.string().min(100, {
+      message: "Minimum length required is 100",
+    }),
+    educationDetail: z.string().min(50, {
+      message: "Minimum length required is 50",
     })
   });
 
@@ -65,7 +75,10 @@ export function TrainerForm() {
       phone: "",
       address: "",
       availability: [],
-      password: ""
+      password: "",
+      about: "",
+      workHistory: "",
+      educationDetail: ""
     },
   });
 
@@ -76,13 +89,22 @@ export function TrainerForm() {
         firstName: values.fname,
         lastName: values.lname,
         password: values.password,
-        role: "trainer" 
+        role: "trainer" // Hardcoding role as 'trainer'
       };
-      const userResponse = await axios.post("http://localhost:3005/api/v1/user/signup", payload);
+      // const userResponse = await axios.post("http://localhost:3005/api/v1/user/signup", payload);
+      const userResponse = await axios.post(
+        "http://localhost:3005/api/v1/user/signup",
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json', // Ensure the content type is set
+          },
+        }
+      );
 
       const userId = userResponse.data._id;
       const trainerPayload = {
-        _id: userId, 
+        _id: userId, // Set _id to be the same as the user _id
         fname: values.fname,
         lname: values.lname,
         qualifications: values.qualifications,
@@ -93,6 +115,9 @@ export function TrainerForm() {
         address: values.address,
         availability: values.availability,
         password: values.password, // Optional: If you need to store password in Trainer too
+        about: values.about,
+        workHistory: values.workHistory,
+        educationDetail: values.educationDetail
     };
       
       const response = await axios.post("http://localhost:3005/api/v1/trainers/signup", trainerPayload);
@@ -123,7 +148,7 @@ export function TrainerForm() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-1">
-          <div className="grid grid-cols-2 w-full gap-2 max-[769px]:grid-cols-1">
+          <div className="grid grid-cols-2 w-full gap-3 max-[769px]:grid-cols-1">
             <div>
               <div className="flex gap-2 w-full max-sm:flex-col">
                 <div className="flex w-1/2 max-sm:w-full">
@@ -236,9 +261,22 @@ export function TrainerForm() {
                   </FormItem>
                 )}
               />
+              <FormField
+                name="address"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Address</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your address" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <div>
-              <div className='flex justify-center'>
+              <div className='flex justify-center mb-4'>
                 <Card className="w-full">
                   <CardContent className='h-full pt-2 w-full '>
                     <div className='w-full flex justify-center'>
@@ -254,35 +292,44 @@ export function TrainerForm() {
                 </Card>
               </div>
               <FormField
-                name="address"
+                name="about"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Address</FormLabel>
+                    <FormLabel>About</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your address" {...field} />
+                      <Textarea placeholder="Tell us about yourself..." {...field}/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              {/* <Card>
-                <CardHeader>
-                  <CardTitle>
-                    See near your location
-                  </CardTitle>
-                  <CardDescription>Northern Street, Chicago, United States</CardDescription>
-                </CardHeader>
-                <CardContent>
-
-                  <Image src={'/img/basemap.png'}
-                    alt='map'
-                    width={300}
-                    height={200}
-                  />
-                </CardContent>
-              </Card> */}
+              <FormField
+                name="workHistory"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Your Work History</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Share your work history..." {...field}/>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="educationDetail"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Education Details</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Enter your Education Details..." {...field}/>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               {/* <FormField
                 name="availability"
@@ -298,11 +345,12 @@ export function TrainerForm() {
                 )}
               /> */}
               {/* <JobDetailForm /> */}
+
             </div>
 
           </div>
           <div className="flex justify-between py-4">
-            <Button variant={"outline"} type="button">Cancel</Button>
+            <a href="/"><Button variant={"outline"} type="button">Cancel</Button></a>
             <Button type="submit">Submit Details</Button>
           </div>
         </form>

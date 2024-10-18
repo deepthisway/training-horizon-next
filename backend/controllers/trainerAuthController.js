@@ -15,6 +15,9 @@ const signUpSchema = z.object({
   address: z.string().min(1, "Address is required"),
   availability: z.array(z.string()).optional(),
   password: z.string().min(6, "Password must be at least 6 characters long"),
+  about: z.string().min(1),
+  workHistory: z.string().min(1),
+  educationDetail: z.string().min(1)
 });
 
 const loginSchema = z.object({

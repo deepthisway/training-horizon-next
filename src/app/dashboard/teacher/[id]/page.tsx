@@ -15,16 +15,11 @@ interface TrainerData {
   id: string;
   address: string;
   experience: string;
-  // imageUrl: string;
-  // about: string;
-  // workHistory: string;
   qualifications: string;
   linkedin: string;
-  // cardData: Array<{
-  //   icon?: React.ReactNode;
-  //   title: string;
-  //   description: string;
-  // }>;
+  about: string;
+  workHistory: string;
+  educationDetail: string;
 }
 
 const TeacherPf: React.FC = ({
@@ -165,26 +160,6 @@ any) => {
               <div className="flex justify-between">
                 <div className="flex">
                   <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="gray"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="size-5 mt-0.5 mr-1">
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M6.66634 2.66669H9.33301C11.847 2.66669 13.1043 2.66669 13.885 3.44802C14.6663 4.22869 14.6663 5.48602 14.6663 8.00002C14.6663 10.514 14.6663 11.7714 13.885 12.552C13.1043 13.3334 11.847 13.3334 9.33301 13.3334H6.66634C4.15234 13.3334 2.89501 13.3334 2.11434 12.552C1.33301 11.7714 1.33301 10.514 1.33301 8.00002C1.33301 5.48602 1.33301 4.22869 2.11434 3.44802C2.89501 2.66669 4.15234 2.66669 6.66634 2.66669ZM8.83301 6.00002C8.83301 5.86741 8.88569 5.74024 8.97945 5.64647C9.07322 5.5527 9.2004 5.50002 9.33301 5.50002H12.6663C12.7989 5.50002 12.9261 5.5527 13.0199 5.64647C13.1137 5.74024 13.1663 5.86741 13.1663 6.00002C13.1663 6.13263 13.1137 6.25981 13.0199 6.35357C12.9261 6.44734 12.7989 6.50002 12.6663 6.50002H9.33301C9.2004 6.50002 9.07322 6.44734 8.97945 6.35357C8.88569 6.25981 8.83301 6.13263 8.83301 6.00002ZM9.49967 8.00002C9.49967 7.86741 9.55235 7.74024 9.64612 7.64647C9.73989 7.5527 9.86707 7.50002 9.99967 7.50002H12.6663C12.7989 7.50002 12.9261 7.5527 13.0199 7.64647C13.1137 7.74024 13.1663 7.86741 13.1663 8.00002C13.1663 8.13263 13.1137 8.25981 13.0199 8.35357C12.9261 8.44734 12.7989 8.50002 12.6663 8.50002H9.99967C9.86707 8.50002 9.73989 8.44734 9.64612 8.35357C9.55235 8.25981 9.49967 8.13263 9.49967 8.00002ZM10.1663 10C10.1663 9.86741 10.219 9.74024 10.3128 9.64647C10.4066 9.5527 10.5337 9.50002 10.6663 9.50002H12.6663C12.7989 9.50002 12.9261 9.5527 13.0199 9.64647C13.1137 9.74024 13.1663 9.86741 13.1663 10C13.1663 10.1326 13.1137 10.2598 13.0199 10.3536C12.9261 10.4473 12.7989 10.5 12.6663 10.5H10.6663C10.5337 10.5 10.4066 10.4473 10.3128 10.3536C10.219 10.2598 10.1663 10.1326 10.1663 10ZM7.33301 6.00002C7.33301 6.35364 7.19253 6.69278 6.94248 6.94283C6.69243 7.19288 6.3533 7.33335 5.99967 7.33335C5.64605 7.33335 5.30691 7.19288 5.05687 6.94283C4.80682 6.69278 4.66634 6.35364 4.66634 6.00002C4.66634 5.6464 4.80682 5.30726 5.05687 5.05721C5.30691 4.80716 5.64605 4.66669 5.99967 4.66669C6.3533 4.66669 6.69243 4.80716 6.94248 5.05721C7.19253 5.30726 7.33301 5.6464 7.33301 6.00002ZM5.99967 11.3334C8.66634 11.3334 8.66634 10.7367 8.66634 10C8.66634 9.26335 7.47301 8.66669 5.99967 8.66669C4.52634 8.66669 3.33301 9.26335 3.33301 10C3.33301 10.7367 3.33301 11.3334 5.99967 11.3334Z"
-                      fill="#BDBDBD"
-                    />
-                  </svg>
-                  {/* <p>Teacher ID</p>
-              </div>
-              <p>{kirillmenko.teacherId}</p>*/}
-                </div>
-                <div className="flex justify-between">
-                  <div className="flex">
-                    <svg
                       xmlns="http://www.w3.org/2000/svg"
                       x="0px"
                       y="0px"
@@ -199,9 +174,9 @@ any) => {
                         fill="#FFF"
                         d="M12 19H17V36H12zM14.485 17h-.028C12.965 17 12 15.888 12 14.499 12 13.08 12.995 12 14.514 12c1.521 0 2.458 1.08 2.486 2.499C17 15.887 16.035 17 14.485 17zM36 36h-5v-9.099c0-2.198-1.225-3.698-3.192-3.698-1.501 0-2.313 1.012-2.707 1.99C24.957 25.543 25 26.511 25 27v9h-5V19h5v2.616C25.721 20.5 26.85 19 29.738 19c3.578 0 6.261 2.25 6.261 7.274L36 36 36 36z"></path>
                     </svg>
-                    <p>LinkedIn</p>
-                  </div>
-                  {trainer.linkedin ? (
+                  <p>LinkedIn</p>
+                </div>
+                {trainer.linkedin ? (
                     <a
                       href={trainer.linkedin}
                       target="_blank"
@@ -212,7 +187,6 @@ any) => {
                   ) : (
                     <p>N/A</p>
                   )}
-                </div>
               </div>
 
               <button className="bg-[#17A8FC] text-white font-bold py-2 px-4 rounded hover:bg-blue-700 w-full md:w-[373px] mt-10 mx-auto block">
@@ -239,27 +213,17 @@ any) => {
             <p className="text-lg md:text-xl font-semibold">
               About {trainer.fname}
             </p>
-            <p className="text-gray-600 mt-2 w-full">{kirillmenko.about}</p>
+            <p className="text-gray-600 mt-2 w-full">{trainer.about}</p>
             <div className="mt-3">
               <p className="text-lg md:text-xl font-semibold">Work History</p>
               <p className="text-gray-600 whitespace-pre-line mt-2">
-                {kirillmenko.workHistory}
+                {trainer.workHistory}
               </p>
             </div>
             <div className="mt-3">
               <p className="text-lg md:text-xl font-semibold">Education</p>
-              <p className="text-gray-600 mt-2">{kirillmenko.education}</p>
+              <p className="text-gray-600 mt-2">{trainer.educationDetail}</p>
             </div>
-            {/* <div className="flex flex-wrap justify-around mt-5">
-            {cardData.map((card, index) => (
-              <Card
-                key={index}
-                icon={card.icon}
-                title={card.title}
-                description={card.description}
-              />
-            ))}
-          </div> */}
           </div>
         </div>
       </div>

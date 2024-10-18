@@ -12,7 +12,10 @@ const trainerSchema = z.object({
   email: z.string().min(1),
   phone: z.string().min(1),
   address: z.string().min(1),
-  password: z.string().min(1)
+  password: z.string().min(1),
+  about: z.string().min(1),
+  workHistory: z.string().min(1),
+  educationDetail: z.string().min(1)
 });
 
 // controller to create trainer
