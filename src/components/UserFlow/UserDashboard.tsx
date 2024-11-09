@@ -68,6 +68,7 @@ const UserDashboard = () => {
       {isDropdownOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
           <ul className="py-2">
+          <Link href={`/userflow/yourProfile/`}><li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" >Your Profile</li></Link>
             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={goToFavorites}>Favorites</li>
             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Settings</li>
             <Link href={`/userflow/orders/${userId}`}>

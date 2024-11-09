@@ -111,7 +111,7 @@ userRouter.post("/signup", async function (req, res) {
 
     await sendEmail(
       user.email,
-      "Member Registeration",
+      'Member Registeration',
       `Hello ${user.FirstName}, \n\nYou have successfully registered ${inputFromUser.firstName} as a member into your training horizon account.`
     );
     // member email not available yet!!
@@ -132,6 +132,7 @@ userRouter.post("/signup", async function (req, res) {
     });
   }
 });
+
 
 userRouter.post("/signin", async function (req, res) {
   const userInput = {
@@ -189,24 +190,27 @@ userRouter.put("/", authMiddleware, async function (req, res) {
 
   const isValid = userUpdateSchema.safeParse(userInput);
   if (!isValid.success) {
-    return res.status(411).json({
-      essage: "Error while updating information",
+    return res.status(400).json({
+      message: "Error while updating information",
+      errors: isValid.error.errors, // Helpful if you want to send back validation errors
     });
   }
+
   try {
-    // console.log(" is it correct ?"+res.userId);
-    await User.updateOne({ _id: res.userId }, { $set: userInput });
+    // Assuming authMiddleware sets req.userId after authentication
+    await User.updateOne({ _id: req.userId }, { $set: userInput });
     res.status(200).json({
       message: "Updated successfully",
     });
   } catch (error) {
-    console.log("error in /page update page" + error);
+    console.log("Error in /user update route:", error);
     res.status(500).json({
       message: "Internal server error",
       error: error.message,
     });
   }
 });
+
 
 // for user Dashboard
 userRouter.get("/username", authMiddleware, async function (req, res) {
@@ -216,7 +220,9 @@ userRouter.get("/username", authMiddleware, async function (req, res) {
   res.status(200).json({
     _id: user._id,
     user: user.firstName,
+    userLastName: user.lastName, 
     role: user.role,
+    email: user.email,
   });
 });
 
@@ -238,6 +244,34 @@ userRouter.get("/getUserById/:id", authMiddleware, async (req, res) => {
   }
 });
 
+// userRouter.put("/users/:userId", authMiddleware, async (req, res) => {
+//   const userId = req.params.userId;
+//   console.log(userId);
+
+//   const { firstName, lastName  } = req.body;
+
+//   try {
+//     // Find the user by ID and update the details
+//     const updatedUser = await User.findByIdAndUpdate(
+//       userId,
+//       {
+//         firstName,
+//         lastName,
+//       },
+//       { new: true }
+//     );
+
+//     if (!updatedUser) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.status(200).json({ message: "User details updated successfully", updatedUser });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error updating user details", error: error.message });
+//   }
+// });
+
+
 userRouter.post("/registerMember", authMiddleware, async (req, res) => {
   try {
     const {
@@ -254,7 +288,7 @@ userRouter.post("/registerMember", authMiddleware, async (req, res) => {
       agreeToTerms,
     } = req.body;
     const userId = req.userId;
-
+    // console.log("The user Id is " + userId);
     const newMember = new Member({
       name,
       age,
@@ -278,7 +312,7 @@ userRouter.post("/registerMember", authMiddleware, async (req, res) => {
 
     await sendEmail(
       user.email,
-      "Training Horizon Signup",
+      'Training Horizon Signup',
       `Hello ${user.FirstName}, \n\nYou have successfully created your training horizon account.`
     );
 
