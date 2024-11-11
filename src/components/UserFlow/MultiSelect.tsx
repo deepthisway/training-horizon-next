@@ -267,5 +267,5 @@ export const MultiSelect = forwardRef<HTMLButtonElement, MultiSelectProp>(
     }
 );
 
-// because of es-Lint;
-MultiSelect.displayName = 'MultiSelect';
+
+MultiSelect.displayName = "MultiSelect";

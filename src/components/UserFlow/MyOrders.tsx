@@ -24,7 +24,7 @@ const MyOrders: React.FC = () => {
         if(!userId) return;
         const fetchOrders = async (id: string) => {
           try {
-            const response = await axios.get("http://localhost:3005/api/v1/order/getOrdersByUserId/" + userId.toString());
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/order/getOrdersByUserId/` + userId.toString());
             console.log(id);
             setOrders(response.data.orders); 
           } catch (err: any) {

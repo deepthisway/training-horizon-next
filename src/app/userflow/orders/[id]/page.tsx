@@ -27,7 +27,7 @@ const MyOrders: React.FC = () => {
         if(!id) return;
         const fetchOrders = async (id: string) => {
           try {
-            const response = await axios.get("http://localhost:3005/api/v1/order/getOrdersDetailsByUserId/" + id.toString());
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/order/getOrdersDetailsByUserId/` + id.toString());
             const fetchedOrders = response.data.orders.map((order: any) => ({
               ...order,
               coursePrice: order.price, // Assuming `price` is returned from the API

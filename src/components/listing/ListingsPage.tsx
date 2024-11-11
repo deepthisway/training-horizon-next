@@ -37,20 +37,18 @@ const ListingsPage: React.FC = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [filteredListings, setFilteredListings] = useState<Listing[]>(listings);
 
-// useEffect(()=>  {
-//   const response =axios.get("http://localhost:3005/api/v1/listing/listing/")
-//   .then((res)=> {
-//     setListings(res.data);
-//   })
-//   .catch((err)=> {
-//     console.log(err);
-//   })
-// },[])
     useEffect(()=>{
-        axios.get(`http://localhost:3005/api/v1/listing/bulk?filter=${keywords || selectedCategories }`).then((res)=>{
+        axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/listing/bulk?filter=${keywords || selectedCategories }`).then((res)=>{
           setListings( res.data);
         })
     },[keywords,selectedCategories])
+
+  //   useEffect(()=>{
+  //     axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/listing/bulk?filter=${keywords || selectedCategories }`).then((res)=>{
+  //       setListings( res.data);
+  //     })
+  // },[keywords,selectedCategories])
+
 
   const handleSearch = () => {
     const filtered = listings.filter((listing) => {

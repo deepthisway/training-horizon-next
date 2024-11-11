@@ -28,7 +28,7 @@ function SideLayout({minAgeLimit, maxAgeLimit, listingId}: {minAgeLimit: number,
   // Fetch the username and members
   useEffect(() => {
     const fetchUserName = async () => {
-      const res = await axios.get("http://localhost:3005/api/v1/user/username", {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/username`, {
         headers: {
           Authorization: "Bearer " + window.localStorage.getItem("token"),
         },
@@ -36,7 +36,7 @@ function SideLayout({minAgeLimit, maxAgeLimit, listingId}: {minAgeLimit: number,
       setName(res.data.user);
     };
     const fetchMembers = async () => {
-      const res = await axios.get("http://localhost:3005/api/v1/user/allmembers", {
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/allmembers`, {
         headers: {
           Authorization: "Bearer " + window.localStorage.getItem("token"),
         },
@@ -55,7 +55,7 @@ function SideLayout({minAgeLimit, maxAgeLimit, listingId}: {minAgeLimit: number,
     e.preventDefault();
     closePopup();
 
-    const response = await fetch("http://localhost:3005/api/v1/review/reviews", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/review/reviews`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -73,11 +73,23 @@ function SideLayout({minAgeLimit, maxAgeLimit, listingId}: {minAgeLimit: number,
     }
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (selectedMember) {
-      router.push(`/checkout/${listingId}?memberId=${selectedMember}`);
+      try {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/user/enroll`, {
+          listingId, 
+          memberIds: [selectedMember]  // Wrap selectedMember in an array
+        });
+        if (response.status === 200 || response.status === 201) {
+          router.push(`/checkout/${listingId}?memberId=${selectedMember}`);
+        }
+      } catch (e) {
+        console.error("Error during enrollment:", e);
+        // Optionally set an error message state here to show to the user
+      }
     }
   };
+  
 
   return (
     <>

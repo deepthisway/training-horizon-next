@@ -23,7 +23,7 @@ const Main = () => {
     // Fetch trainers from the API
     const fetchTrainers = async () => {
       try {
-        const response = await fetch('http://localhost:3005/api/v1/approved-trainers/'); // API route for fetching trainers
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/approved-trainers/`); // API route for fetching trainers
         const data = await response.json();
         setTrainers(data);
       } catch (error) {

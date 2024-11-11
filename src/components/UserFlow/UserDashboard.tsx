@@ -13,7 +13,7 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchUserName = async () => {
       try {
-        const response = await axios.get("http://localhost:3005/api/v1/user/username", {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/username`, {
           headers: {
             Authorization: "Bearer " + window.localStorage.getItem("token"),
           },
@@ -29,12 +29,14 @@ const UserDashboard = () => {
 
   const goToFavorites = () => {
     router.push("/favorites");
+
   };
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     window.location.reload();
+    router.push("/");
   };
 
   const handleDropdownToggle = () => {
@@ -76,6 +78,9 @@ const UserDashboard = () => {
             </Link>
             <Link href="/userflow/familyMembers">
               <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Family Members</li>
+            </Link>
+            <Link href={`/trainer/show_my_listings/${userId}`}>
+              <li className='px-4 py-2 hover:bg-gray-100 cursor-pointer'>Show my listings</li>
             </Link>
             <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer" onClick={handleSignOut}>Sign Out</li>
           </ul>

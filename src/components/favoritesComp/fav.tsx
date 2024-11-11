@@ -37,7 +37,7 @@ const FavoriteListingIds = () => {
         const token = localStorage.getItem('token');
         const userId = window.localStorage.getItem('userId');
 
-        const response = await axios.get(`http://localhost:3005/api/v1/favorites/${userId}`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/favorites/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -59,7 +59,7 @@ const FavoriteListingIds = () => {
     const fetchListingDetails = async () => {
       try {
         const detailsPromises = favoriteIds.map(id =>
-          axios.get(`http://localhost:3005/api/v1/listing/listing/${id}`) // Fetch details for each listing ID
+          axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/listing/listing/${id}`) // Fetch details for each listing ID
         );
         const results = await Promise.all(detailsPromises);
         const listings = results.map(result => result.data.listing); // Adjust based on your API response structure

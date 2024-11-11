@@ -48,7 +48,7 @@ const  AdminListings: React.FC = () => {
   ]);
 
 const handleDelete = async(listingId:string,listingTitle:string) =>{
-  const response = await axios.delete('http://localhost:3005/api/v1/admin/discard-listing/'+ listingId.toString());
+  const response = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/discard-listing/`+ listingId.toString());
   //  console.log(response.data);
    setRowData(prevData => prevData.filter(row => row.title != listingTitle))
 }  
@@ -63,7 +63,7 @@ const handleEditListing = (listingId:string) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3005/api/v1/admin/listings"
+          `${process.env.NEXT_PUBLIC_BASE_URL}/admin/listings`
         );
         
         setRowData(response.data.listings);

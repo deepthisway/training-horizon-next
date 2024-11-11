@@ -22,7 +22,7 @@ function SignUpcard() {
  const router = useRouter();
   async function submitForm() {
     try {
-      const res = await axios.post("http://localhost:3005/api/v1/user/signup", {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/user/signup`, {
         email,
         firstName,
         lastName,

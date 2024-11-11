@@ -8,13 +8,15 @@ import { FormProvider } from "react-hook-form";
 import { Interface } from "readline";
 import router from "next/router";
 import Image from "next/image";
-interface ChildComponentProps {
+interface Listing {
   category: string;
   title: string;
-  price: number;
+  priceMode: string;
+  price: string;
   mode: string;
   location: string;
-  quantity: number;
+  quantity: string;
+  classSize: string;
   startDate: string;
   endDate: string;
   days: string;
@@ -25,13 +27,14 @@ interface ChildComponentProps {
   maxAge: string;
   description: string;
   trainerId: string;
+  listingId: string;
   isFavorite: boolean;
 }
 interface ListingId{
-  listingId:string ;
+  listingData:Listing;
+  listingId:string
 }
-
-const MainDetailPage : React.FC<ListingId> = ({ listingId })=>{
+const MainDetailPage : React.FC<ListingId> = ({listingId , listingData})=>{
   const tabs = ["Overview", "Instructors", "Curriculum", "Reviews", "FAQs"];
   const form = useSelector((state: RootState) => state.form);
   const [isSelected, setIsSelected] = useState<boolean>(form.isFavorite);
@@ -45,7 +48,7 @@ const MainDetailPage : React.FC<ListingId> = ({ listingId })=>{
       }
 
       try {
-        const response = await fetch(`http://localhost:3005/api/v1/favorites/${userId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/favorites/${userId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${ window.localStorage.getItem('token') }`,
@@ -55,7 +58,7 @@ const MainDetailPage : React.FC<ListingId> = ({ listingId })=>{
   if (response.ok) {
     const { favorites } = await response.json();
     setFavorites(favorites);
-    setIsSelected(favorites.includes(listingId)); // Check if this listing is a favorite
+    setIsSelected(favorites.includes(listingData.listingId)); // Check if this listing is a favorite
   } else {
     console.error('Error fetching user favorites');
   }
@@ -65,7 +68,7 @@ const MainDetailPage : React.FC<ListingId> = ({ listingId })=>{
     };
 
 fetchFavorites();
-}, [listingId]);
+}, [listingData.listingId]);
 
 // Handle favorite button click
 const handleOnClick = async (event: React.MouseEvent<HTMLImageElement>) => {
@@ -83,21 +86,21 @@ const handleOnClick = async (event: React.MouseEvent<HTMLImageElement>) => {
   }
 
   try {
-    const response = await fetch('http://localhost:3005/api/v1/favorites', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/favorites`, {
       method: newIsSelected ? 'POST' : 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${ window.localStorage.getItem('token') }`,
             },
-  body: JSON.stringify({ userId, listingId }),
+  body: JSON.stringify({ userId, listingId}),
         });
 
 if (response.ok) {
   if (newIsSelected) {
-    setFavorites((prevFavorites) => [...prevFavorites, listingId]);
+    setFavorites((prevFavorites) => [...prevFavorites, listingData.listingId]);
     console.log('Favorite added successfully');
   } else {
-    setFavorites((prevFavorites) => prevFavorites.filter((id) => id !== listingId));
+    setFavorites((prevFavorites) => prevFavorites.filter((id) => id !== listingData.listingId));
     console.log('Favorite removed successfully');
   }
 } else {
@@ -121,6 +124,8 @@ if (response.ok) {
               <Image
                 className="h-[20rem] w-[55rem]"
                 src="/img/math.svg"
+                height={150}
+                width={150}
                 alt="Calculator and Tools"
               />
             </div>
@@ -129,10 +134,10 @@ if (response.ok) {
           {/* Middle Section: Course Info */}
           <div className="flex-grow">
             <span className="bg-[#17A8FC] text-white p-1.5 rounded-3xl">
-              {form.category}
+              {listingData.category}
             </span>
-            <h2 className="text-2xl font-bold mt-2">{form.title}</h2>
-            <p className="text-gray-600 mt-2">{form.description}</p>
+            <h2 className="text-2xl font-bold mt-2">{listingData.title}</h2>
+            <p className="text-gray-600 mt-2">{listingData.description}</p>
             <div className="mt-4 flex space-x-6 text-sm text-gray-600">
               <span>50+ People Enrolled</span>
               <span>5 Projects</span>
@@ -140,11 +145,13 @@ if (response.ok) {
             </div>
             <div className="m-8 inline-flex">
               <button className="bg-[#17A8FC] text-white py-3 px-8 rounded mb-8 hover:bg-[#1782fc] shadow-xl">
-                Learn {form.category}
+                Learn {listingData.category}
               </button>
               <div className=" mt-3 m-3">
               <Image
              src={`${isSelected ? `/icons/filled_fav.png` : `/icons/fav.png`}`}
+             width={25}
+             height={25}
              alt="fav"
             className="cursor-pointer"
             onClick={handleOnClick}

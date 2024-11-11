@@ -48,6 +48,7 @@ const Sidebar: React.FC<ChildComponentProps> = ({ value, setValue }) => {
                 className="mx-2"
                 src="/img/dashboard/profile.svg"
                 alt="dashboardlogo"
+                width={50} height={50}
               />
               Profile
             </button>
@@ -68,6 +69,7 @@ const Sidebar: React.FC<ChildComponentProps> = ({ value, setValue }) => {
                 className="mx-2"
                 src="/img/dashboard/dashboardlogo.svg"
                 alt="dashboardlogo"
+                width={50} height={50}
               />
               Dashboard
             </button>
@@ -88,6 +90,7 @@ const Sidebar: React.FC<ChildComponentProps> = ({ value, setValue }) => {
                   className="mx-2"
                   src="/img/dashboard/profile.svg"
                   alt="dashboardlogo"
+                  width={50} height={50}
                 />
                 Listing
               </button>
@@ -128,6 +131,7 @@ const Sidebar: React.FC<ChildComponentProps> = ({ value, setValue }) => {
                 className="mx-2"
                 src="/img/dashboard/setting.svg"
                 alt="dashboardlogo"
+                width={50} height={50}
               />
               Account Setting
             </button>
@@ -145,6 +149,7 @@ const Sidebar: React.FC<ChildComponentProps> = ({ value, setValue }) => {
                 className="mx-2"
                 src="/img/dashboard/setting.svg"
                 alt="dashboardlogo"
+                width={50} height={50}
               />
               Order Status
             </button>
@@ -162,6 +167,7 @@ const Sidebar: React.FC<ChildComponentProps> = ({ value, setValue }) => {
                 className="mx-2"
                 src="/img/dashboard/logout.svg"
                 alt="dashboardlogo"
+                width={50} height={50}
               />
               Log Out
             </button>

@@ -7,7 +7,7 @@ const rootRouter = require("./routes/mainRouter");
 const connectDB = require("./config/db");
 
 const app = express();
-const PORT = process.env.PORT || 3005;
+const PORTNO = process.env.PORT || 3005;
 app.use(cors());
 app.use(express.json());
 
@@ -17,6 +17,6 @@ connectDB();
 // app.use('/api/v1' , trainer_router)
 app.use("/api/v1", rootRouter);
 
-app.listen(PORT, () => {
-  console.log(`Training-Horizon is serving on port ${PORT}`);
+app.listen(PORTNO, () => {
+  console.log(`Training-Horizon is serving on port ${PORTNO}`);
 });

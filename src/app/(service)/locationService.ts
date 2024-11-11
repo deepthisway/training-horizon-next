@@ -3,7 +3,7 @@
 export const fetchLocationCoordinates = async () => {
   try {
     // Fetch the place name as a string from your API
-    const response = await fetch('http://localhost:3005/api/v1/listing/listing/66daf615d126a0a164db5965');
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/listing/listing/66daf615d126a0a164db5965`);
 
     const ress = await response.json(); // Assuming API returns the place name as plain text
     const placeName =ress.listing.location

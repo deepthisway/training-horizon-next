@@ -24,7 +24,7 @@ const RoleBasedNav = () => {
   useEffect(() => {
     const token = window.localStorage.getItem("token");
     
-    axios.get("http://localhost:3005/api/v1/user/username", {
+    axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/user/username`, {
       headers: {
         Authorization: "Bearer " + token
       }
@@ -41,7 +41,7 @@ const RoleBasedNav = () => {
   // Fetch trainer data when trainerId is available
   useEffect(() => {
     if (trainerId) { // Ensure trainerId is set before making the API call
-      axios.get(`http://localhost:3005/api/v1/trainers/${trainerId}`)
+      axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/trainers/${trainerId}`)
         .then((res) => {
           setIsApproved(res.data.trainer.isApproved);
         })

@@ -135,7 +135,43 @@ listingRouter.get("/listing/:listingId", async function (req, res) {
   }
 });
 
-listingRouter.post("/add-listing", trainerAuthMiddleware,async function (req, res) {
+listingRouter.get("/getListingsByTrainerId/:trainerId", async function (req, res){
+  const {trainerId} = req.params;
+  try{
+    const listings = await Listing.find({trainerId: trainerId});
+    if(!listings){
+      return res.status(404).json({
+        message: "Trainer not found",
+      })
+    }
+    
+    res.status(200).json({
+      message: "Listings retrieved successfully",
+      listings,
+    })
+  } catch(error){
+    res.status(500).json({
+      message: "Error fetching listings",
+      error: error,
+    })
+  }
+})
+
+listingRouter.delete("/deleteListingById/:listingId", trainerAuthMiddleware, async function (req, res) {
+  const {listingId} = req.params
+  try{
+    const listing = await Listing.findByIdAndDelete(listingId);
+    if(!listing)
+      return res.status(404).json({error: "No listing with this id found"})
+
+    res.status(200).json({message: "Listing Deleted successfully"})
+  } catch(error){
+    res.status(404).json({error: error.message})
+  }
+
+})
+
+listingRouter.post("/add-listing", trainerAuthMiddleware, async function (req, res) {
     const inputFromTrainer = {
       trainerId: req.trainerId,
       category: req.body.category,
@@ -145,7 +181,7 @@ listingRouter.post("/add-listing", trainerAuthMiddleware,async function (req, re
       mode: req.body.mode,
       location: req.body.location,
       quantity: req.body.quantity,
-      classSize: req.body.quantity,
+      classSize: req.body.classSize,
       startDate: req.body.startDate,
       endDate: req.body.endDate,
       days: req.body.days,
@@ -199,7 +235,7 @@ listingRouter.post("/add-listing", trainerAuthMiddleware,async function (req, re
 
 listingRouter.put("/add-listing/:id", trainerAuthMiddleware,async function (req, res) {
   const inputFromTrainer = {
-    trainerId: req.params.id,
+    trainerId: req.trainerId,
     category: req.body.category,
     priceMode: req.body.priceMode,
     title: req.body.title,

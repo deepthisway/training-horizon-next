@@ -39,7 +39,7 @@ const Dashboard:React.FC<ChildComponentProps> = ( {value ,setValue})=> {
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-lg shadow p-4 ">
           <div className="flex flex-row gap-1">
-            <Image src="/img/dashboard/user.svg" alt="user" height={50} width={50}/>
+            <Image src="/img/dashboard/user.svg" alt="user" width={50} height={50} />
             <h3 className="text-sm text-gray-500 ">Users Engaged</h3>
           </div>
 
@@ -49,7 +49,7 @@ const Dashboard:React.FC<ChildComponentProps> = ( {value ,setValue})=> {
         </div>
         <div className="bg-white rounded-lg shadow p-4">
           <h3 className="text-sm text-gray-500 flex flex-row gap-1">
-            <Image src="/img/dashboard/transaction.svg" alt="transaction" height={50} width={50}/>
+            <Image src="/img/dashboard/transaction.svg" alt="transaction" width={50} height={50} />
             Total Transactions
           </h3>
           <p className="text-2xl font-semibold">
@@ -58,7 +58,7 @@ const Dashboard:React.FC<ChildComponentProps> = ( {value ,setValue})=> {
         </div>
         <div className="bg-white rounded-lg shadow p-4">
           <h3 className="text-sm text-gray-500 flex flex-row gap-1 ">
-            <Image src="/img/dashboard/revenue.svg" alt="" />
+            <Image src="/img/dashboard/revenue.svg" alt="" width={50} height={50} />
             Revenue Generated
           </h3>
           <p className="text-2xl font-semibold ">

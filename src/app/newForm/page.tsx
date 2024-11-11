@@ -26,7 +26,7 @@ const TrainerList: React.FC = () => {
   useEffect(() => {
     const fetchTrainers = async () => {
       try {
-        const response = await axios.get(`http://localhost:3005/api/v1/trainers/`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/trainers/`);
         setTrainers(response.data);
       } catch (err) {
         setError('Failed to fetch trainers.');

@@ -23,7 +23,7 @@ const OrderStatus: React.FC = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("http://localhost:3005/api/v1/order/getAllOrders/");
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/order/getAllOrders/`);
         const fetchedOrders = response.data.orders.map((order: any) => ({
           ...order,
           coursePrice: order.price, 
@@ -45,7 +45,7 @@ const OrderStatus: React.FC = () => {
 
   const handleStatusChange = async (orderId: number, newStatus: Order['status']) => {
     try {
-      await axios.put(`http://localhost:3005/api/v1/order/updateOrderStatus`, {
+      await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}/order/updateOrderStatus`, {
         orderId,
         status: newStatus,
       });

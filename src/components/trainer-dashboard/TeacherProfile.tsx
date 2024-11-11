@@ -42,12 +42,12 @@ any) => {
   const { id } = useParams<{ id: string }>();
   console.log(id);
   const [trainer, setTrainer] = useState<TrainerData | null>(null);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3005/api/v1/trainers/" + id.toString()
+          `${process.env.NEXT_PUBLIC_BASE_URL}/trainers/` + id.toString()
         );
         // console.log(response.data.trainer);
         setTrainer(response.data.trainer);

@@ -3,6 +3,7 @@ const zod = require("zod");
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = require("../config/jwt");
 const { User } = require("../models/user");
+const { Enrollment} = require("../models/enrollment")
 const { authMiddleware } = require("../middleware/authMiddleware");
 const Member = require("../models/Member");
 const sendEmail = require("../utils/sendEmail");
@@ -413,6 +414,83 @@ userRouter.get("/members/:id", authMiddleware, async (req, res) => {
     res
       .status(500)
       .json({ message: "Error fetching family member", error: error.message });
+  }
+});
+// Routes for enrollement logic
+// Enroll a user in a course
+userRouter.post("/enroll", async (req, res) => {
+  const { listingId, memberIds } = req.body; // Accept an array of memberIds
+
+  if (!listingId || !Array.isArray(memberIds) || memberIds.length === 0) {
+    return res.status(400).json({
+      error: "Listing ID and an array of Member IDs are required",
+    });
+  }
+
+  try {
+    // Find the enrollment document for the given listingId
+    let enrollment = await Enrollment.findOne({ listingId });
+
+    if (!enrollment) {
+      enrollment = new Enrollment({
+        listingId,
+        memberIds: memberIds,
+      });
+      await enrollment.save();
+      return res.status(200).json({
+        message: "Enrollment created and members added",
+        enrollment,
+      });
+    }
+
+    // Filter out memberIds that are already in the members array
+    const newMembers = memberIds.filter(
+      (id) => !enrollment.memberIds.includes(id)
+    );
+
+    if (newMembers.length === 0) {
+      return res.status(400).json({
+        error: "All provided members are already enrolled in this listing",
+      });
+    }
+
+    // Add the new members to the array and save
+    enrollment.memberIds.push(...newMembers);
+    await enrollment.save();
+
+    res.status(200).json({
+      message: "New members added to the enrollment",
+      addedMembers: newMembers,
+      enrollment,
+    });
+  } catch (error) {
+    console.error("Error enrolling members:", error);
+    res.status(500).json({ error: "Failed to enroll members" });
+  }
+});
+
+userRouter.get("/enrolled/:listingId", async (req, res) => {
+  const { listingId } = req.params;
+
+  if (!listingId) {
+    return res.status(400).json({ error: "Listing ID is required" });
+  }
+
+  try {
+    const enrollment = await Enrollment.findOne({ listingId });
+
+    if (!enrollment) {
+      return res
+        .status(404)
+        .json({ error: "No enrollment found for this listing" });
+    }
+
+    const memberCount = enrollment.memberIds.length;
+
+    res.status(200).json({ listingId, memberCount });
+  } catch (error) {
+    console.error("Error counting members:", error);
+    res.status(500).json({ error: "Failed to count members" });
   }
 });
 

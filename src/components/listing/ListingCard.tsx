@@ -92,7 +92,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
       }
 
       try {
-        const response = await fetch(`http://localhost:3005/api/v1/favorites/${userId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/favorites/${userId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${ window.localStorage.getItem('token') }`,
@@ -130,7 +130,7 @@ const handleOnClick = async (event: React.MouseEvent<HTMLImageElement>) => {
   }
 
   try {
-    const response = await fetch('http://localhost:3005/api/v1/favorites', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/favorites`, {
       method: newIsSelected ? 'POST' : 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -193,8 +193,8 @@ return (
           src={`${isSelected ? `/icons/filled_fav.png` : `/icons/fav.png`}`}
           alt="fav"
           className="cursor-pointer"
-          width={500} 
-          height={300}   
+          width={25} 
+          height={25}   
           onClick={handleOnClick}
         />
       </div>

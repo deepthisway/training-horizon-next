@@ -45,7 +45,7 @@ const RegisterMemberForm = () => {
   const onSubmit = async (data: any) => {
     console.log("Button clicked!!")
     try {
-      const response = await axios.post('http://localhost:3005/api/v1/user/registerMember', data, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/user/registerMember`, data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

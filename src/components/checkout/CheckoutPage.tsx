@@ -100,7 +100,7 @@ function CheckoutPage() {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        "http://localhost:3005/api/v1/order/checkout",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/order/checkout`,
         values,
         {
           headers: {
@@ -136,7 +136,7 @@ function CheckoutPage() {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3005/api/v1/user/getUserById/${userId}`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/user/getUserById/${userId}`,
           {
             headers: {
               Authorization: "Bearer " + window.localStorage.getItem("token"),
@@ -162,7 +162,7 @@ function CheckoutPage() {
     const fetchListing = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3005/api/v1/listing/listing/${listingId}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}/listing/listing/${listingId}`
         );
         setListingData(response.data.listing);
       } catch (error) {
@@ -180,7 +180,7 @@ function CheckoutPage() {
     const fetchMemberData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3005/api/v1/user/members/${memberId}`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/user/members/${memberId}`,
           {
             headers: {
               Authorization: "Bearer " + window.localStorage.getItem("token"),

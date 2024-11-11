@@ -60,6 +60,7 @@ const InstructorCard: React.FC<{
           className="h-24 w-24 md:h-36 md:w-36 rounded-full object-cover"
           src={imagePath || "/path/to/default/image.jpg"} // Placeholder for now
           alt={name}
+          width={50} height={50}
         />
       </div>
 

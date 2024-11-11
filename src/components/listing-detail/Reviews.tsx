@@ -15,7 +15,7 @@ const Reviews = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:3005/api/v1/review/reviews')
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/review/reviews`)
       .then((res) => res.json())
       .then((data) => setReviews(data));
   }, []);
@@ -27,11 +27,12 @@ const Reviews = () => {
         {reviews.map((review) => (
           <div key={review._id} className="p-4 bg-white shadow rounded-lg">
             <div className="flex items-center mb-2">
-              <Image
+              {/* <Image
                 src={`https://ui-avatars.com/api/?name=${review.name}&background=random`}
                 alt={review.name}
+                width={50} height={50}
                 className="w-10 h-10 rounded-full mr-4"
-              />
+              /> */}
               <div>
                 <h3 className="font-semibold">{review.name}</h3>
                 <div className="text-yellow-500">

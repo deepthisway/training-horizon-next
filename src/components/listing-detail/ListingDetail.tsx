@@ -21,21 +21,58 @@ interface TrainerData {
   qualifications: string;
   [key: string]: any; // Optional: for additional properties
 }
-
-const ListingDetail: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+interface ListingDetailPageProps {
+  id:string; 
+}
+interface ListingCard {
+  category: string;
+  title: string;
+  priceMode: string;
+  price: string;
+  mode: string;
+  location: string;
+  quantity: string;
+  classSize: string;
+  startDate: string;
+  endDate: string;
+  days: string;
+  gender: string;
+  startTime: string;
+  endTime: string;
+  minAge: string;
+  maxAge: string;
+  description: string;
+  trainerId: string;
+  listingId: string;
+  isFavorite: boolean;
+}
+const ListingDetail: React.FC<ListingDetailPageProps> = ({id}) => {
   const [activeTab, setActiveTab] = useState<string>("Overview");
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<TrainerData | null>(null);
   const tabs = ["Overview", "Instructors", "Curriculum", "Reviews", "FAQs"];
-
+  const [getListing ,setListing] = useState<ListingCard >({} as ListingCard); 
   const form = useSelector((state: RootState) => state.form);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/listing/listing/${id}`
+        );
+        setListing(response.data.listing);
+      } catch (error) {
+        console.log("error");
+      }
+    };
+  
+    fetchData();
+  }, [id]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3005/api/v1/trainers/" + form.trainerId.toString()
+          `${process.env.NEXT_PUBLIC_BASE_URL}/trainers/` + form.trainerId.toString()
         );
         // console.log(response.data.trainer);
         setData(response.data.trainer);
@@ -52,7 +89,7 @@ const ListingDetail: React.FC = () => {
   return (
     <>
       <div className="bg-white shadow-md rounded-lg p-6 flex items-center ">
-        <MainDetailPage listingId={id}/>
+        <MainDetailPage  listingId ={id} listingData= {getListing} />
         <SideLayout minAgeLimit={Number(form.minAge)} maxAgeLimit={Number(form.maxAge)} listingId={id} />
       </div>
       <Reviews />

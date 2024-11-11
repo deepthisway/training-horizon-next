@@ -33,23 +33,24 @@ function PendingDetails() {
       <button className='text-red-600' onClick={() => handleRejectListing(data.data._id,data.data.title)}>Reject</button>
     </div>},
   ])
+  
 
  const handleRejectTrainer = async (trainerID:string,trainerEmail:string) => {
-   const response = await axios.delete('http://localhost:3005/api/v1/admin/discard-trainer/'+ trainerID.toString());
+   const response = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/discard-trainer/`+ trainerID.toString());
   //  console.log(response.data);
    setRowData(prevData => prevData.filter(row => row.email != trainerEmail))
  }
 
  const handleApproveTrainer = async (trainerID:string,trainerEmail:string) =>{
     // console.log(trainerID);
-    const response = await axios.post('http://localhost:3005/api/v1/admin/approve-trainer/'+ trainerID.toString());
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/approve-trainer/`+ trainerID.toString());
     // console.log(response.data);
      setRowData(prevData => prevData.filter(row => row.email != trainerEmail))
  }
 
 
  const handleRejectListing = async (listingId:string,listingTitle:string) => {
-  const response = await axios.delete('http://localhost:3005/api/v1/admin/discard-listing/'+ listingId.toString());
+  const response = await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/discard-listing/`+ listingId.toString());
   //  console.log(response.data);
    setRowData2(prevData => prevData.filter(row => row.title != listingTitle))
  }
@@ -57,7 +58,7 @@ function PendingDetails() {
 
  const handleApproveListing = async (listingId:string,listingTitle:string) =>{
   // console.log(listingId);
-  const response = await axios.post('http://localhost:3005/api/v1/admin/approve-listing/'+ listingId.toString());
+  const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/approve-listing/`+ listingId.toString());
   // console.log(response.data);
    setRowData2(prevData => prevData.filter(row => row.title != listingTitle))
 }
@@ -65,8 +66,8 @@ function PendingDetails() {
   useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:3005/api/v1/admin/pending-trainers');
-      const res = await axios.get('http://localhost:3005/api/v1/admin/pending-listings');
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/pending-trainers`);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/pending-listings`);
       // console.log(response.data.pendingTrainers);
       // if(Array.isArray(response.data.data))
       setRowData(response.data.pendingTrainers)

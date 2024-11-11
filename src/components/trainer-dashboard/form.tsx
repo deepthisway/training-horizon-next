@@ -92,9 +92,8 @@ export function TrainerForm() {
         password: values.password,
         role: "trainer" // Hardcoding role as 'trainer'
       };
-      // const userResponse = await axios.post("http://localhost:3005/api/v1/user/signup", payload);
       const userResponse = await axios.post(
-        "http://localhost:3005/api/v1/user/signup",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/user/signup`,
         payload,
         {
           headers: {
@@ -121,7 +120,7 @@ export function TrainerForm() {
         educationDetail: values.educationDetail
     };
       
-      const response = await axios.post("http://localhost:3005/api/v1/trainers/signup", trainerPayload);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/trainers/signup`, trainerPayload);
 
       
       console.log(userResponse.data);

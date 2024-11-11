@@ -59,7 +59,7 @@ export default function FamilyMembers() {
       try {
         await new Promise((resolve) => setTimeout(resolve,1200)); // to test loader 
         const res = await axios.get(
-          "http://localhost:3005/api/v1/user/allmembers",
+          `${process.env.NEXT_PUBLIC_BASE_URL}/user/allmembers`,
           {
             headers: {
               Authorization: "Bearer " + window.localStorage.getItem("token"),
@@ -119,7 +119,7 @@ export default function FamilyMembers() {
   
     try {
       const response = await axios.put(
-        `http://localhost:3005/api/v1/user/members/${currentMember._id}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/user/members/${currentMember._id}`,
         updatedInfo,
         {
           headers: {

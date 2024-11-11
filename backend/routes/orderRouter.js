@@ -37,7 +37,7 @@ router.get("/getAllOrders", async function(req, res){
         }
     
         try {
-          const listingResponse = await axios.get(`http://localhost:3005/api/v1/listing/listing/${order.listingId}`);
+          const listingResponse = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/listing/listing/${order.listingId}`);
           const { price } = listingResponse.data.listing;
           return { ...order, price };
         } catch (error) {
@@ -101,7 +101,7 @@ router.get("/getOrdersDetailsByUserId/:userId", async function (req, res) {
         }
     
         try {
-          const listingResponse = await axios.get(`http://localhost:3005/api/v1/listing/listing/${order.listingId}`);
+          const listingResponse = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/listing/listing/${order.listingId}`);
           const { price } = listingResponse.data.listing;
           // const price = listingResponse?.data?.listing?.price || null;
           return { ...order, price };
@@ -170,7 +170,7 @@ router.get("/getOrderDetailsByOrderId/:orderId", async function (req, res) {
 
     // Fetch listing details based on listingId
     try {
-      const listingResponse = await axios.get(`http://localhost:3005/api/v1/listing/listing/${orderObj.listingId}`);
+      const listingResponse = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/listing/listing/${orderObj.listingId}`);
       const { price, title } = listingResponse.data.listing;
 
       // Return the order details along with the fetched listing details

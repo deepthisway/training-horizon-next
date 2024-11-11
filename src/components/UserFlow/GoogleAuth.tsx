@@ -7,7 +7,7 @@ const GoogleAuth = () => {
     const router = useRouter();
     async function googleAuth(email:string,firstName:string,lastName:string,password:string) {
         try {
-          const res = await axios.post("http://localhost:3005/api/v1/user/google-auth", {
+          const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/user/google-auth`, {
             email,
             firstName,
             lastName,
