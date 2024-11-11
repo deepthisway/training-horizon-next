@@ -88,7 +88,7 @@ const Sidebar = ({
         <p className="text-sm text-gray-500">{user?.email}</p>
       </div>
       <div className="w-full">
-        {["Profile", "Purchases and Subscriptions", "Family Members"].map(
+        {["Profile", "Purchases and Subscriptions", "Family Members","Search Alert"].map(
           (tab) => (
             <button
               key={tab}
