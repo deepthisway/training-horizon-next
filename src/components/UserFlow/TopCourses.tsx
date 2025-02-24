@@ -36,8 +36,8 @@ export default function TopCourses() {
 
   return (
     <section className="bg-white/40 container mx-auto px-4 py-12">
-      <h2 className="text-5xl font-bold text-center">
-        Top <span className="text-blue-500">Courses</span>
+      <h2 className="text-4xl font-bold text-center">
+        Top <span className="text-blue-600">Courses</span>
       </h2>
       <p className="text-center text-gray-500 mt-2 mb-12">
         Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere
@@ -45,12 +45,11 @@ export default function TopCourses() {
         curae Proin sodales ultrices nulla blandit volutpat.
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8" >
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {getCategories.map((getCategories, i) => (
           <div
             key={i}
-            className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-transform duration-300 transform hover:scale-105 hover:-translate-y-2"
-          >
+            className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-transform duration-300 transform hover:scale-105 hover:-translate-y-2">
             <div className="aspect-video relative rounded-t-xl overflow-hidden">
               <Image
                 src={"/img/new/sport.svg"} // Replace with dynamic source later

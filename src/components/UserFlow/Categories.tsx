@@ -55,14 +55,12 @@ const Categories = () => {
         {/* Scrollable Categories Container */}
         <div
           ref={scrollContainerRef}
-          className="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar p-4"
-        >
+          className="flex space-x-6 overflow-x-auto scroll-smooth no-scrollbar p-4">
           {getCategories.map((category, i) => (
             <div
               onClick={() => router.push(`/${category.category}`)}
               key={i}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl hover: transition-transform duration-300 transform hover:scale-105 hover:-translate-y-2 min-w-[250px] flex-grow"
-            >
+              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl hover: transition-transform duration-300 transform hover:scale-105 hover:-translate-y-2 min-w-[250px] flex-grow">
               <div className="aspect-square relative">
                 <Image
                   src={"/img/new/education.svg"} // Make dynamic when AWS work is done
