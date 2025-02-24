@@ -7,13 +7,81 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '@/components/UserFlow/NavBar'
 import Link from 'next/link';
 
-type Order = {
+type OrderD = {
     _id: number,
   createdAt: string;
   status: 'ON HOLD' | 'FAILED' | 'COMPLETED';
   coursePrice: string;
   items: number;
 };
+
+export interface Root {
+  message: string
+  orders: Order[]
+}
+
+export interface Order {
+  price: Price
+  _id: string
+  user: string
+  members: Member[]
+  listings: Listing[]
+  createdAt: string
+  updatedAt: string
+  __v: number
+}
+
+export interface Price {
+  subtotal: number
+  tax: number
+  shipping: number
+  totalPrice: number
+}
+
+export interface Member {
+  _id: string
+  name: string
+  age: number
+  dob: string
+  relationship: string
+  gender: string
+  address: string
+  city: string
+  postalCode: string
+  agreeToTerms: boolean
+  doctorName: string
+  doctorNumber: string
+  __v: number
+}
+
+export interface Listing {
+  _id: string
+  trainerId: string
+  category: string
+  subCategory: string
+  title: string
+  imageUrl: string
+  priceMode: string
+  price: string
+  mode: string
+  location: string
+  quantity: string
+  classSize: string
+  startDate: string
+  endDate: string
+  days: string[]
+  gender: string
+  startTime: string
+  endTime: string
+  minAge: string
+  maxAge: string
+  preRequistes: string
+  description: string
+  avgRating: number
+  isApproved: boolean
+  reviews: string[]
+  __v: number
+}
 
 
 const MyOrders: React.FC = () => {
@@ -72,7 +140,7 @@ const MyOrders: React.FC = () => {
           <tr className="bg-gray-100 text-left">
             <th className='py-2 px-4'>Order Id</th>
             <th className="py-2 px-4">Date</th>
-            <th className="py-2 px-4">Status</th>
+            {/* <th className="py-2 px-4">Status</th> */}
             <th className="py-2 px-4">Total</th>
             <th className="py-2 px-4">Actions</th>
           </tr>
@@ -82,12 +150,12 @@ const MyOrders: React.FC = () => {
             <tr key={order._id}>
               <td className='py-2 px-4' >{order._id}</td>
               <td className="py-2 px-4">{formatDate(order.createdAt)}</td>
-              <td className="py-2 px-4">
+              {/* <td className="py-2 px-4">
                 <span className={`${order.status === "ON HOLD" ? `text-yellow-600 bg-yellow-100` : `${order.status === "FAILED" ? `bg-red-500 text-white` :`bg-green-500 text-white`} `} py-1 px-3 rounded-full text-sm`}>
                   {order.status}
                 </span>
-              </td>
-              <td className="py-2 px-4">${calculateTotal(order.coursePrice)}</td>
+              </td> */}
+              <td className="py-2 px-4">${order?.price.totalPrice.toFixed(2)}</td>
               <td className="py-2 px-4">
                 <Link className='text-blue-600' href={`/userflow/orderdetails/${order._id}`}> View</Link>
               </td>

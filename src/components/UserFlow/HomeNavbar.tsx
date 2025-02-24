@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import UserDashboard from "./UserDashboard";
 import RoleBasedNav from "./RoleBasedNav";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -14,8 +14,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
-import HomeNavbar from "./HomeNavbar"// Create a separate Navbar for Home
-import router from "next/router";
+import HomeNavbar from "./HomeNavbar"; // Create a separate Navbar for Home
 
 const Navbar = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -25,8 +24,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const router = useRouter();
-  const pathname = usePathname(); // Get current path
-  const isHomePage = pathname === "/";// Check if the current page is Home
+//   const isHomePage = router.pathname === "/"; // Check if the current page is Home
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -46,13 +44,17 @@ const Navbar = () => {
     };
   }, []);
 
-  if (isHomePage) {
-    return <HomeNavbar />; // Render HomeNavbar for the Home page
-  }
+//   if (isHomePage) {
+//     return <HomeNavbar />; // Render HomeNavbar for the Home page
+//   }
 
   return (
     <nav
-      className={`sticky top-0 left-0 right-0 z-50 transition-colors duration-300 bg-white backdrop-blur-sm`}
+      className={`sticky top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        isScrolled
+          ? "bg-white backdrop-blur-sm"
+          : "bg-[url('/img/new/displayBackground.svg')] bg-cover bg-center"
+      }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">

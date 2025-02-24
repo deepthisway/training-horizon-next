@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 interface SearchBarProps {
   keywords?: string;
   setKeywords?: React.Dispatch<React.SetStateAction<string>>;
-  onSearch?: () => void;
+  onSearch?: (searchKeywords: string) => void;
 }
 
 const SearchSection: React.FC<SearchBarProps> = ({
@@ -13,7 +13,7 @@ const SearchSection: React.FC<SearchBarProps> = ({
   onSearch = () => {},
 }) => {
   return (
-    <section className="bg-white/20 container mx-auto px-4 py-24">
+    <section className="bg-white/20 container mx-auto px-4 py-10">
       <div className="flex flex-row justify-end max-w-2xl mx-auto relative">
         <Input
           type="text"
@@ -23,7 +23,9 @@ const SearchSection: React.FC<SearchBarProps> = ({
           className="w-full pl-4 pr-20 py-6 shadow-lg rounded-full"
         />
         <Button
-          onClick={onSearch}
+          onClick={() => {
+            onSearch(keywords);
+          }}
           className="absolute bg-blue-500 hover:bg-blue-600 rounded-full py-6 px-8">
           Search
         </Button>

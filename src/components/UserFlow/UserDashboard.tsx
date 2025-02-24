@@ -18,6 +18,7 @@ const UserDashboard = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [cartItems, setCartItems] = useState(0);
   const [isOrg, setIsOrg] = useState(false);
+  // const [istrainers, setIsTrainers] = useState(false);
   const router = useRouter();
   const userId =
     typeof window !== "undefined"
@@ -67,6 +68,35 @@ const UserDashboard = () => {
   }, []);
   
 
+  // useEffect(() => {
+  //   if (!userId) return; // Prevents unnecessary API call if userId is null
+
+  //   const fetchTrainers = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         `${process.env.NEXT_PUBLIC_BASE_URL}/trainers/${userId}`
+  //       );
+  //       const data = await response.json();
+  //       // console.log(data);
+  //       // console.log("hey ");
+  //       if(data.success){
+  //         setIsTrainers(true);
+  //       } // Update state based on API response
+  //     } catch (error) {
+  //       console.error("Error fetching trainers:", error);
+  //     }
+  //   };
+
+  //   fetchTrainers();
+  // }, [userId]);
+
+  // Organization ID from localStorage
+  const orgId =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("userId")
+      : null;
+
+  // Fetch organization name on component mount
   useEffect(() => {
     const fetchOrgName = async () => {
       try {
@@ -74,6 +104,7 @@ const UserDashboard = () => {
           `${process.env.NEXT_PUBLIC_BASE_URL}/organizations/${userId}`
         );
         setUserName(response.data.orgname);
+
       } catch (error) {
         console.log("Error finding OrgId");
       }
@@ -159,13 +190,13 @@ useEffect(() => {
             {!isOrg ? (
               <>
                 <DropdownMenuItem asChild className="py-3">
-                  <Link href="/userflow/yourProfile">Your Profile</Link>
+                  <Link href="/userflow/yourProfile">DashBoard</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="py-3">
-                  <Link href={`/trainer/show_my_listings/${userId}`}>
-                    My Listings
-                  </Link>
-                </DropdownMenuItem>
+                {/* {istrainers && (
+                  <DropdownMenuItem asChild className="py-3">
+                    <Link href={`/trainer/show_my_listings/${userId}`}>Listing</Link>
+                  </DropdownMenuItem>
+                )} */}
                 <DropdownMenuItem className="py-3" onClick={goToFavorites}>
                   Favorites
                 </DropdownMenuItem>
@@ -178,9 +209,9 @@ useEffect(() => {
                 <DropdownMenuItem asChild className="py-3">
                   <Link href="/userflow/familyMembers">Family Members</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="py-3">
+                {/* <DropdownMenuItem asChild className="py-3">
                   <Link href="/settings">Settings</Link>
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
               </>
             ) : (
               <>

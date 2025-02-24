@@ -35,15 +35,24 @@ exports.createTrainer = async (req, res) => {
 
 exports.updateTrainer = async (req, res) => {
   try {
-    trainerSchema.parse(req.body);
-    const trainer = await Trainer.findByIdAndUpdate(req.params.id, req.body);
-    if (!trainer)
-      return res.status(500).json({ error: "Error, trainer not found!!" });
-    res.status(200).json({ trainer, message: "Trainer updated" });
+    console.log("🔹 Incoming update request:", req.params.id, req.body);
+
+    const trainer = await Trainer.findById(req.params.id);
+    if (!trainer) {
+      console.error("Trainer not found with ID:", req.params.id);
+      return res.status(404).json({ error: "Trainer not found!" });
+    }
+
+    // Update only provided fields
+    Object.assign(trainer, req.body);
+
+    await trainer.save();
+
+    console.log("Trainer updated successfully:", trainer);
+    res.status(200).json({ trainer, message: "Trainer updated successfully" });
   } catch (e) {
-    res.status(500).json({
-      error: e.message,
-    });
+    console.error("Error updating trainer:", e.message);
+    res.status(500).json({ error: e.message });
   }
 };
 
@@ -76,12 +85,13 @@ exports.getApprovedTrainers = async (req, res) => {
 exports.getTrainerById = async (req, res) => {
   try {
     const trainer = await Trainer.findById(req.params.id);
-    if (!trainer) return res.status(500).json({ Error: "Not trainer found" });
+    if (!trainer) return res.status(500).json({ success: false, mesaage: "Not trainer found" });
     res.status(200).send({
       trainer,
+      success: true,
     })
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.status(500).json({ success: false, error: e.message });
   }
 };
 

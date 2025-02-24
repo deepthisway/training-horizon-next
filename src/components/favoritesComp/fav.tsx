@@ -6,6 +6,7 @@ import ListingCard from '../listing/ListingCard';
 interface Listing {
   _id: string;
   category: string;
+  subcategory: string;
   title: string;
   imageUrl:string;
   priceMode: string;
@@ -85,12 +86,12 @@ const FavoriteListingIds = () => {
         <hr className="w=full border-2 border-sky-500 mb-10" />
 
         <div className="w-full">
-          <div className="flex gap-6 flex-wrap justify-evenly">
+          <div className="grid grid-cols-1 md:grid-cols-2  gap-6">
             {listingDetails.length > 0 ? (
               listingDetails.map(listing => (
                 <ListingCard
-                  categoryName={""}
-                  subCategoryName={""}
+                  categoryName={listing.category}
+                  subCategoryName={listing.subcategory}
                   key={listing._id}
                   listingId={listing._id}
                   category={listing.category}
