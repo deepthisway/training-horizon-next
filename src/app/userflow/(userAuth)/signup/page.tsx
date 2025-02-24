@@ -1,21 +1,3 @@
-// import Footer from "@/components/UserFlow/Footer";
-// import Navbar from "@/components/UserFlow/NavBar";
-// import SignUpcard from "@/components/UserFlow/SignUpcard";
-// import React, { Component } from "react";
-
-// const page = () => {
-//   return (
-//     <>
-//       <Navbar />
-//       <main className="flex justify-center my-16 items-center h-screen bg-transparent">
-//         <SignUpcard />
-//       </main>
-//       <Footer />
-//     </>
-//   );
-// };
-
-// export default page;
 import Footer from "@/components/UserFlow/Footer";
 import Navbar from "@/components/UserFlow/NavBar";
 import SignUpcard from "@/components/UserFlow/SignUpcard";

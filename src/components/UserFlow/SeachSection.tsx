@@ -19,13 +19,12 @@ const SearchSection: React.FC<SearchBarProps> = ({
           type="text"
           value={keywords}
           onChange={(e) => setKeywords(e.target.value)}
-          placeholder="Course Title, Location..."
+          placeholder="Course Title..."
           className="w-full pl-4 pr-20 py-6 shadow-lg rounded-full"
         />
         <Button
           onClick={onSearch}
-          className="absolute bg-blue-500 hover:bg-blue-600 rounded-full py-6 px-8"
-        >
+          className="absolute bg-blue-500 hover:bg-blue-600 rounded-full py-6 px-8">
           Search
         </Button>
       </div>

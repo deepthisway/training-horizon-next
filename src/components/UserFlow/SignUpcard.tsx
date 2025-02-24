@@ -14,6 +14,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import GoogleAuth from "./GoogleAuth";
+import Image from "next/image"; // Importing Image from next/image
 
 // Zod validation schema with password confirmation
 const signUpSchema = z
@@ -84,11 +85,6 @@ function SignUpCard() {
           lastName,
           password,
         }
-        // {
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        // }
       );
       setIsLoading(false);
       console.log(res.data.token);
@@ -102,112 +98,125 @@ function SignUpCard() {
 
   return (
     <main className="h-screen flex items-center justify-center p-4 md:p-10 w-full">
-      {/* {isLoading ? (<div>Loading.... </div>) : ( */}
-      <Card className="w-full max-w-[600px] h-auto p-6 shadow-lg">
-        <CardHeader>
-          <h2 className="text-2xl font-bold text-gray-600 text-center">
-            Create your <span className="text-blue-600">account</span>
-          </h2>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm">
-                Email
-              </Label>
-              <Input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="First Name" className="text-sm">
-                First Name
-              </Label>
-              <Input
-                type="text"
-                id="First Name"
-                placeholder="ex. Narendra"
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              {errors.firstName && (
-                <p className="text-red-500 text-sm">{errors.firstName}</p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="Last Name" className="text-sm">
-                Last Name
-              </Label>
-              <Input
-                type="text"
-                id="Last Name"
-                placeholder="ex. Modi"
-                onChange={(e) => setLastName(e.target.value)}
-              />
-              {errors.lastName && (
-                <p className="text-red-500 text-sm">{errors.lastName}</p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm">
-                Password
-              </Label>
-              <Input
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              {errors.password && (
-                <p className="text-red-500 text-sm">{errors.password}</p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-sm">
-                Confirm Password
-              </Label>
-              <Input
-                type="password"
-                id="confirmPassword"
-                placeholder="Confirm your password"
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-              {errors.confirmPassword && (
-                <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
-              )}
-            </div>
-          </div>
-        </CardContent>
-        <div className="flex justify-center">
-          <Button
-            className="mt-4 w-full max-w-[500px] bg-blue-600 text-white hover:bg-blue-900"
-            onClick={() => {
-              setIsLoading(true);
-              submitForm();
-            }}
-            disabled={isLoading}>
-            {isLoading ? "Creating Account...." : "Create Account"}
-          </Button>
+      <div className="flex w-full max-w-4xl">
+        {/* Image Div */}
+        <div className="w-1/2 hidden mr-1 lg:block">
+          <Image
+            src="/img/new/image.png"
+            alt="Signup Image"
+            width={600}
+            height={600}
+            className="w-full h-full object-cover shadow-lg rounded-l-lg"
+          />
         </div>
-        <CardFooter className="text-center mt-4">
-          <div className="text-sm">
-            Already have an account?{" "}
-            <Link href="/userflow/login">
-              <span className="text-blue-600 cursor-pointer hover:underline">
-                Login here!
-              </span>
-            </Link>
+
+        {/* Form Section */}
+        <Card className="w-full lg:w-1/2 rounded-l-none max-w-[600px] h-auto p-6 shadow-lg">
+          <CardHeader>
+            <h2 className="text-2xl font-bold text-gray-600 text-center">
+              Create your <span className="text-blue-600">account</span>
+            </h2>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm">
+                  Email
+                </Label>
+                <Input
+                  type="email"
+                  id="email"
+                  placeholder="Enter your email"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="First Name" className="text-sm">
+                  First Name
+                </Label>
+                <Input
+                  type="text"
+                  id="First Name"
+                  placeholder="ex. Narendra"
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                {errors.firstName && (
+                  <p className="text-red-500 text-sm">{errors.firstName}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="Last Name" className="text-sm">
+                  Last Name
+                </Label>
+                <Input
+                  type="text"
+                  id="Last Name"
+                  placeholder="ex. Modi"
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+                {errors.lastName && (
+                  <p className="text-red-500 text-sm">{errors.lastName}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-sm">
+                  Password
+                </Label>
+                <Input
+                  type="password"
+                  id="password"
+                  placeholder="Enter your password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {errors.password && (
+                  <p className="text-red-500 text-sm">{errors.password}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword" className="text-sm">
+                  Confirm Password
+                </Label>
+                <Input
+                  type="password"
+                  id="confirmPassword"
+                  placeholder="Confirm your password"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                {errors.confirmPassword && (
+                  <p className="text-red-500 text-sm">
+                    {errors.confirmPassword}
+                  </p>
+                )}
+              </div>
+            </div>
+          </CardContent>
+          <div className="flex justify-center">
+            <Button
+              className="mt-4 w-full max-w-[500px] bg-blue-600 text-white hover:bg-blue-900"
+              onClick={() => {
+                setIsLoading(true);
+                submitForm();
+              }}
+              disabled={isLoading}>
+              {isLoading ? "Creating Account...." : "Create Account"}
+            </Button>
           </div>
-        </CardFooter>
-        <GoogleAuth />
-      </Card>
-      {/* )
-    } */}
+          <CardFooter className="text-center mt-4">
+            <div className="text-sm">
+              Already have an account?{" "}
+              <Link href="/userflow/login">
+                <span className="text-blue-600 cursor-pointer hover:underline">
+                  Login here!
+                </span>
+              </Link>
+            </div>
+          </CardFooter>
+          <GoogleAuth />
+        </Card>
+      </div>
     </main>
   );
 }
