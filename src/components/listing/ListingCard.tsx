@@ -93,7 +93,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
       })
     );
   };
-  const [getImageUrl, setImageUrl] = useState<string>("/img/tempListingImg.jpg");
+  const [getImageUrl, setImageUrl] = useState<string>("/img/animation2.gif");
 
   useEffect(() => {
     const fetchFavorites = async () => {

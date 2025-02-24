@@ -10,6 +10,7 @@ import { RootState } from "@/lib/store/store";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setForm } from "@/lib/store/formSlice";
+import NewDetailPage from "./NewDetailPage";
 
 
 
@@ -35,12 +36,13 @@ interface ListingCard {
   priceMode: string;
   price: string;
   mode: string;
+  imageUrl: string;
   location: string;
   quantity: string;
   classSize: string;
   startDate: string;
   endDate: string;
-  days: string;
+  days: [string];
   gender: string;
   startTime: string;
   endTime: string;
@@ -99,7 +101,8 @@ const ListingDetail: React.FC<ListingDetailPageProps> = ({ id }) => {
       <div className="bg-white shadow-lg rounded-xl p-6 md:p-8 flex flex-col md:flex-row gap-6 md:gap-8 items-start">
         {/* Main Content */}
         <div className="w-full md:w-2/3">
-          <MainDetailPage listingId={id} listingData={getListing} />
+          {/* <MainDetailPage listingId={id} listingData={getListing} /> */}
+          {data && <NewDetailPage listingId={id} listingData = {getListing} instructorData = {data} />}
         </div>
 
         {/* Sidebar */}
@@ -119,14 +122,6 @@ const ListingDetail: React.FC<ListingDetailPageProps> = ({ id }) => {
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Reviews</h2>
         <Reviews listingId={id} />
       </div>
-
-      {/* Instructor Section */}
-      {data && (
-        <div className="bg-white shadow-lg rounded-xl p-6 md:p-8">
-          <h2 className="text-2xl font-bold mb-4 text-gray-800">Instructor</h2>
-          <InstructorsPage trainer={data} />
-        </div>
-      )}
     </div>
   );
 };
