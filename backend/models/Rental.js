@@ -53,6 +53,10 @@ const rentalSchema = new mongoose.Schema(
       required: true,
       match: /.+\@.+\..+/,
     },
+    category: {
+      type: String,
+      required: true,
+    },
     ratings: {
       type: Number,
       min: 0,
@@ -67,9 +71,7 @@ const rentalSchema = new mongoose.Schema(
         createdAt: { type: Date, default: Date.now },
       },
     ],
-    amenities: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'Amenity' } 
-    ],
+    amenities: [{ type: String, required: true }],
   },
   { timestamps: true } 
 );

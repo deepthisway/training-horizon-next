@@ -14,6 +14,7 @@ interface Listing {
   priceMode: string;
   price: string;
   mode: string;
+  imageUrl: string;
   location: string;
   quantity: string;
   classSize: string;
@@ -42,6 +43,7 @@ const MainDetailPage: React.FC<ListingId> = ({ listingId, listingData }) => {
 
   useEffect(() => {
     const fetchFavorites = async () => {
+      console.log("imageUrl", listingData.imageUrl)
       const userId = window.localStorage.getItem("userId");
       if (!userId) {
         return;

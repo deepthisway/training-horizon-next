@@ -15,7 +15,6 @@ import {
 
 const UserDashboard = () => {
   const [userName, setUserName] = useState<string | null>(null);
-  // const [orgName, setOrgName] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [cartItems, setCartItems] = useState(0);
   const [isOrg, setIsOrg] = useState(false);
@@ -25,50 +24,54 @@ const UserDashboard = () => {
       ? window.localStorage.getItem("userId")
       : null;
 
-  // Fetch user role on component mount
+  // Check if user is organization
   useEffect(() => {
     if (typeof window === "undefined") return;
     const role = localStorage.getItem("role");
     setIsOrg(role === "organization");
   }, []);
 
-  // Fetch user name on component mount
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.warn("No token found, skipping fetchUserName.");
+      return;
+    }
+  
     const fetchUserName = async () => {
       try {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_BASE_URL}/user/username`,
           {
             headers: {
-              Authorization:
-                "Bearer " +
-                (typeof window !== "undefined"
-                  ? window.localStorage.getItem("token")
-                  : ""),
+              Authorization: "Bearer " + token,
             },
           }
         );
         setUserName(response.data.user);
-      } catch (err) {
-        console.error("Error fetching username:", err);
+      } catch (err: any) {
+        if (err.response && err.response.status === 403) {
+          console.error("Access forbidden (403). Token may be invalid or expired.");
+          // Optionally, sign the user out:
+          localStorage.removeItem("token");
+          localStorage.removeItem("userId");
+          // Redirect to login page if needed:
+          // router.push('/userflow/login');
+        } else {
+          console.error("Error fetching username:", err);
+        }
       }
     };
-
+  
     fetchUserName();
   }, []);
+  
 
-  // Organization ID from localStorage
-  const orgId =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("userId")
-      : null;
-
-  // Fetch organization name on component mount
   useEffect(() => {
     const fetchOrgName = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/organizations/${orgId}`
+          `${process.env.NEXT_PUBLIC_BASE_URL}/organizations/${userId}`
         );
         setUserName(response.data.orgname);
       } catch (error) {
@@ -76,32 +79,50 @@ const UserDashboard = () => {
       }
     };
     if (isOrg) fetchOrgName();
-  }, [isOrg, orgId]);
+  }, [isOrg, userId]);
 
-  // Update cartItems when localStorage cart is changed
-  useEffect(() => {
-    if (typeof window === "undefined") return;
+// Fetch cart items from the backend
+useEffect(() => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.warn("No token found, skipping cart fetch.");
+    return;
+  }
 
-    const updateCartItems = () => {
-      const cartData = JSON.parse(localStorage.getItem("cart") || "[]");
-      setCartItems(cartData.length);
-    };
+  const fetchCart = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/user/cart`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      // Assuming response.data.cart is an array of paired cart items.
+      setCartItems(response.data.cart.length);
+    } catch (error: any) {
+      if (error.response && error.response.status === 403) {
+        console.error("Access forbidden (403). Token may be invalid or expired.");
+        // Optionally, sign the user out or redirect to login.
+      } else {
+        console.error("Error fetching cart:", error);
+      }
+    }
+  };
 
-    // Listen for the custom event
-    const handleCartUpdated = () => {
-      updateCartItems();
-    };
+  fetchCart();
 
-    window.addEventListener("cart-updated", handleCartUpdated);
+  const handleCartUpdated = () => {
+    fetchCart();
+  };
 
-    // Initial cart items count
-    updateCartItems();
+  window.addEventListener("cart-updated", handleCartUpdated);
+  return () => {
+    window.removeEventListener("cart-updated", handleCartUpdated);
+  };
+}, []);
 
-    // Cleanup event listener
-    return () => {
-      window.removeEventListener("cart-updated", handleCartUpdated);
-    };
-  }, []);
 
   const goToFavorites = () => {
     router.push("/favorites");
@@ -109,10 +130,8 @@ const UserDashboard = () => {
 
   const handleSignOut = () => {
     if (typeof window === "undefined") return;
-
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
-    localStorage.removeItem("cart");
     window.location.reload();
     router.push("/");
   };
@@ -123,7 +142,7 @@ const UserDashboard = () => {
 
   return (
     <>
-      <div className="relative inline-block text-left flex flex-row  items-center space-x-4 ">
+      <div className="relative inline-block text-left flex flex-row items-center space-x-4">
         {/* Dropdown Menu */}
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center space-x-2">
@@ -136,7 +155,7 @@ const UserDashboard = () => {
               className="h-8 w-8 rounded-full"
             />
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-52" >
+          <DropdownMenuContent align="end" className="w-52">
             {!isOrg ? (
               <>
                 <DropdownMenuItem asChild className="py-3">

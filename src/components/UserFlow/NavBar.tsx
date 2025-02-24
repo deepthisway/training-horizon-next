@@ -57,9 +57,11 @@ const Navbar = () => {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/all/courses", label: "Courses" },
+    { href: "/rentals", label: "Book a Rental" },
     { href: "/about", label: "About Us" },
     { href: "/trainer",label: "Our Trainers"}
   ];
+  
 
   return (
     <nav className={`sticky top-0 left-0 right-0 z-50 transition-colors duration-300 ${
@@ -100,9 +102,9 @@ const Navbar = () => {
                 {isOrg ? (
                   <Link
                     className="bg-yellow-600 p-2 rounded-sm text-white"
-                    href={""}
+                    href={"/Organization/createRental"}
                   >
-                    Create a Gym
+                    Create a Rental
                   </Link>
                 ) : null}
               </div>

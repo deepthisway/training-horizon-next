@@ -23,14 +23,13 @@ exports.createRental = async (req, res) =>  {
 
 exports.getAllRentals = async (req, res)    =>  {
     try {
-        const rentals = await Rental.find().populate('amenities');
+        const rentals = await Rental.find();
         if(!rentals)    {
             return res.status(400).hson({
                 msg: "no rentals found"
             })
         }
         res.status(201).json({
-            msg: "rentals fetched success",
             rentals
         })
     } catch (error) {

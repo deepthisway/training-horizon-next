@@ -49,7 +49,7 @@ const RoleBasedNav = () => {
           console.error('Error fetching trainer data:', err);
         });
     }
-  }, [trainerId]); // This effect will run whenever trainerId is updated
+  }, []); // This effect will run whenever trainerId is updated
   return (
     <div>
     {!isApproved && <Popup
@@ -58,7 +58,7 @@ const RoleBasedNav = () => {
     onClose={() => setPopupVisible(false)}
     redirectTo="/"
     />}
-    {(role === "trainer") ?
+    {(role === "trainer") &&
     <div> <Link
         href={isApproved ? "/userflow/addListing" : "/"}
         onClick={handleClick}
@@ -68,8 +68,7 @@ const RoleBasedNav = () => {
         Add Listing
       </Link>
       
-      </div>
-      :<div/>}
+      </div>}
       </div>
   )
 }
