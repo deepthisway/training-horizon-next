@@ -543,4 +543,195 @@ userRouter.get("/enrollment-details/:listingId", async (req, res) => {
   }
 });
 
+// cart routes
+
+userRouter.post("/cart", authMiddleware, async (req, res) => {
+  // Expected req.body format:
+  // {
+  //   listings: ["listingId1", "listingId2", ...],
+  //   members: ["memberId1", "memberId2", ...]
+  // }
+  const { listings, members } = req.body;
+
+  if (!Array.isArray(listings) || !Array.isArray(members)) {
+    return res.status(400).json({ message: "Listings and members must be arrays." });
+  }
+
+  if (listings.length !== members.length) {
+    return res.status(400).json({ message: "Listings and members arrays must have the same length." });
+  }
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Ensure cart exists
+    if (!user.cart) {
+      user.cart = { listings: [], members: [] };
+    }
+
+    // Loop through each new pair of listing and member
+    for (let i = 0; i < listings.length; i++) {
+      const newListing = listings[i];
+      const newMember = members[i];
+
+      // Check if the exact pair already exists in the cart
+      let duplicate = false;
+      for (let j = 0; j < user.cart.listings.length; j++) {
+        if (
+          user.cart.listings[j].toString() === newListing &&
+          user.cart.members[j].toString() === newMember
+        ) {
+          duplicate = true;
+          break;
+        }
+      }
+
+      if (!duplicate) {
+        user.cart.listings.push(newListing);
+        user.cart.members.push(newMember);
+      }
+    }
+
+    await user.save();
+
+    // Build a zipped array for the response so that each item is shown as a pair.
+    const cartItems = [];
+    for (let i = 0; i < user.cart.listings.length; i++) {
+      cartItems.push({
+        listing: user.cart.listings[i],
+        member: user.cart.members[i],
+      });
+    }
+
+    res.status(200).json({
+      message: "Cart updated successfully",
+      cart: cartItems,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error updating cart",
+      error: error.message,
+    });
+  }
+});
+
+userRouter.get("/cart", authMiddleware, async (req, res) => {
+  try {
+    // Retrieve the user and populate the referenced listings and members.
+    const user = await User.findById(req.userId)
+      .populate("cart.listings")
+      .populate("cart.members");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Zip the two arrays to produce a list of cart items
+    const cartItems = [];
+    const listings = user.cart.listings || [];
+    const members = user.cart.members || [];
+    const length = Math.min(listings.length, members.length);
+    for (let i = 0; i < length; i++) {
+      cartItems.push({
+        listing: listings[i],
+        member: members[i],
+      });
+    }
+
+    res.status(200).json({
+      cart: cartItems,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching cart",
+      error: error.message,
+    });
+  }
+});
+
+userRouter.delete("/cart", authMiddleware, async (req, res) => {
+  const { listingId, memberId } = req.body;
+  if (!listingId || !memberId) {
+    return res.status(400).json({ message: "Both listingId and memberId are required." });
+  }
+
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Ensure the cart exists
+    if (!user.cart) {
+      user.cart = { listings: [], members: [] };
+    }
+
+    // Find the index of the matching pair
+    let indexToRemove = -1;
+    for (let i = 0; i < user.cart.listings.length; i++) {
+      if (
+        user.cart.listings[i].toString() === listingId &&
+        user.cart.members[i].toString() === memberId
+      ) {
+        indexToRemove = i;
+        break;
+      }
+    }
+
+    if (indexToRemove === -1) {
+      return res.status(404).json({ message: "Cart item not found." });
+    }
+
+    // Remove the matching item from both arrays
+    user.cart.listings.splice(indexToRemove, 1);
+    user.cart.members.splice(indexToRemove, 1);
+
+    await user.save();
+    return res.status(200).json({ message: "Cart item removed successfully.", cart: user.cart });
+  } catch (error) {
+    return res.status(500).json({ message: "Error removing cart item", error: error.message });
+  }
+});
+
+userRouter.delete("/cart/clear", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Clear the cart by setting listings and members arrays to empty
+    user.cart = { listings: [], members: [] };
+
+    await user.save();
+    return res.status(200).json({ message: "Cart cleared successfully.", cart: user.cart });
+  } catch (error) {
+    return res.status(500).json({ message: "Error clearing cart", error: error.message });
+  }
+});
+
+userRouter.put("/orders", authMiddleware, async (req, res) => {
+  const { orderId } = req.body;
+  if (!orderId) {
+    return res.status(400).json({ message: "OrderId is required." });
+  }
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.userId,
+      { $push: { orders: orderId } },
+      { new: true }
+    );
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+    res.status(200).json({ message: "Order added to user's orders", user });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating orders", error: error.message });
+  }
+});
+
+
 module.exports = userRouter;
