@@ -49,15 +49,18 @@ const Categories = () => {
   };
 
   useEffect(() => {
-    axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/category`).then((res) => {
-      setCategories(res.data);
-    });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/category`)
+      .then((res) => {
+        setCategories(res.data);
+      });
   }, []);
 
   return (
     <section className=" bg-white/30 container mx-auto py-12">
-      <h2 className="text-5xl font-bold text-center mb-2">Browse</h2>
-      <h3 className="text-4xl font-bold text-center text-blue-500 mb-12">Category</h3>
+      <h2 className="text-4xl font-bold text-center mb-10">
+        Browse <span className="text-blue-600">Category</span>
+      </h2>
 
       <div className="relative max-w-6xl mx-auto">
         {/* Left Arrow */}
@@ -65,8 +68,7 @@ const Categories = () => {
           <button
             onClick={handlePrev}
             className="absolute -left-5 top-1/2 transform z-10 -translate-y-1/2 bg-gray-100 hover:bg-gray-300 px-2 py-1 rounded-full shadow-md"
-            aria-label="Previous"
-          >
+            aria-label="Previous">
             ←
           </button>
         )}
@@ -75,15 +77,14 @@ const Categories = () => {
         <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6`}>
           {displayedCategories.map((category, i) => (
             <div
-              onClick={()=>{
+              onClick={() => {
                 router.push(`/${category.category}`);
               }}
               key={i}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-transform duration-300 transform hover:scale-105 hover:-translate-y-2"
-            >
+              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-2xl transition-transform duration-300 transform hover:scale-105 hover:-translate-y-2">
               <div className="aspect-square relative">
                 <Image
-                  src={"/img/new/education.svg"}//this should be dynamic once AWS work is done
+                  src={"/img/new/education.svg"} //this should be dynamic once AWS work is done
                   alt={category.category}
                   fill
                   className="object-cover rounded-t-lg"
@@ -103,8 +104,7 @@ const Categories = () => {
           <button
             onClick={handleNext}
             className="absolute -right-5 top-1/2 transform -translate-y-1/2 bg-gray-100 hover:bg-gray-300 px-2 py-1 rounded-full shadow-md"
-            aria-label="Next"
-          >
+            aria-label="Next">
             →
           </button>
         )}

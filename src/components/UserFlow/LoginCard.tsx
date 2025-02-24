@@ -14,13 +14,14 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import GoogleAuth from "./GoogleAuth";
 import Popup from "../trainer-dashboard/PopUp";
+import Footer from "./Footer";
 
 function LoginCard() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [popupMessage, setPopupMessage] = useState("");
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -32,7 +33,7 @@ function LoginCard() {
   };
 
   async function submitForm(endpoint: any) {
-    setIsLoading(true); 
+    setIsLoading(true);
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}${endpoint}`,
@@ -49,8 +50,11 @@ function LoginCard() {
       window.localStorage.setItem("role", res.data.role);
       router.push("/");
     } catch (err: any) {
-      setIsLoading(false); 
-      if (err.response && err.response.status === 401 || err.response.status === 400) {
+      setIsLoading(false);
+      if (
+        (err.response && err.response.status === 401) ||
+        err.response.status === 400
+      ) {
         setIsPopUpOpen(true);
         setPopupMessage("Invalid Credentials");
       } else {
@@ -60,10 +64,10 @@ function LoginCard() {
   }
 
   return (
-    <main className="h-screen flex items-center fixed justify-center p-5 sm:p-10 w-full overflow-hidden">
-      <Card className="w-full sm:w-[600px] h-auto mx-auto p-6 shadow-lg ">
-        <CardHeader>
-          <h2 className="text-2xl font-bold">Login</h2>
+    <main className="h-screen flex items-center  justify-center p-5 sm:p-10 w-full overflow-hidden">
+      <Card className="w-full sm:w-[600px] h-auto mx-auto p-3 shadow-lg ">
+        <CardHeader className="text-center">
+          <h2 className="text-2xl text-gray-600 font-bold">Login</h2>
         </CardHeader>
         <CardContent>
           <div className="space-y-5">
@@ -94,7 +98,7 @@ function LoginCard() {
 
         <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-3">
           <Button
-            className="w-full sm:w-auto bg-[#FDCE29] text-black hover:bg-yellow-500"
+            className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-800"
             onClick={() => submitForm("/user/signin")}
             disabled={isLoading} // Disable the button when loading
           >
@@ -107,10 +111,9 @@ function LoginCard() {
             redirectTo="/userflow/login"
           />
           <Button
-            className="w-full sm:w-auto bg-[#fd2934] text-black hover:bg-red-800"
+            className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-800"
             onClick={() => submitForm("/organizations/login")}
-            disabled={isLoading} 
-          >
+            disabled={isLoading}>
             {isLoading ? "Logging in..." : "Login as Organization"}
           </Button>
         </div>

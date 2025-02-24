@@ -48,8 +48,14 @@ function SignUpCard() {
 
   const validateInputs = () => {
     try {
-      signUpSchema.parse({ email, firstName, lastName, password, confirmPassword });
-      setErrors({}); 
+      signUpSchema.parse({
+        email,
+        firstName,
+        lastName,
+        password,
+        confirmPassword,
+      });
+      setErrors({});
       return true;
     } catch (e) {
       if (e instanceof z.ZodError) {
@@ -68,7 +74,7 @@ function SignUpCard() {
 
   const submitForm = async () => {
     if (!validateInputs()) return;
-    await new Promise((resolve) =>  setTimeout(resolve,2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/user/signup`,
@@ -95,16 +101,18 @@ function SignUpCard() {
   };
 
   return (
-    <main className="h-screen flex items-center fixed justify-center p-4 md:p-10 w-full">
+    <main className="h-screen flex items-center justify-center p-4 md:p-10 w-full">
       {/* {isLoading ? (<div>Loading.... </div>) : ( */}
       <Card className="w-full max-w-[600px] h-auto p-6 shadow-lg">
         <CardHeader>
-          <h2 className="text-2xl font-bold text-center">Create your account</h2>
+          <h2 className="text-2xl font-bold text-gray-600 text-center">
+            Create your <span className="text-blue-600">account</span>
+          </h2>
         </CardHeader>
         <CardContent>
           <div className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-lg">
+              <Label htmlFor="email" className="text-sm">
                 Email
               </Label>
               <Input
@@ -118,7 +126,7 @@ function SignUpCard() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="First Name" className="text-lg">
+              <Label htmlFor="First Name" className="text-sm">
                 First Name
               </Label>
               <Input
@@ -132,7 +140,7 @@ function SignUpCard() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="Last Name" className="text-lg">
+              <Label htmlFor="Last Name" className="text-sm">
                 Last Name
               </Label>
               <Input
@@ -146,7 +154,7 @@ function SignUpCard() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-lg">
+              <Label htmlFor="password" className="text-sm">
                 Password
               </Label>
               <Input
@@ -160,7 +168,7 @@ function SignUpCard() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-lg">
+              <Label htmlFor="confirmPassword" className="text-sm">
                 Confirm Password
               </Label>
               <Input
@@ -177,16 +185,13 @@ function SignUpCard() {
         </CardContent>
         <div className="flex justify-center">
           <Button
-            className="mt-4 w-full max-w-[500px] bg-[#FDCE29] text-black hover:bg-yellow-500"
-            onClick={()=> {
+            className="mt-4 w-full max-w-[500px] bg-blue-600 text-white hover:bg-blue-900"
+            onClick={() => {
               setIsLoading(true);
               submitForm();
             }}
-            disabled={isLoading}
-            
-          >
+            disabled={isLoading}>
             {isLoading ? "Creating Account...." : "Create Account"}
-            
           </Button>
         </div>
         <CardFooter className="text-center mt-4">
@@ -204,9 +209,7 @@ function SignUpCard() {
       {/* )
     } */}
     </main>
-            
   );
 }
-
 
 export default SignUpCard;
