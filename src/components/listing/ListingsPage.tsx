@@ -44,7 +44,7 @@ const ListingsPage: React.FC<{
   const initialKeywords = searchParams.get("keywords") || ""
 
   const [keywords, setKeywords] = useState<string>(initialKeywords)
-  const [searchwords, setSearchwords] = useState<string>("") // ✅ Keep search state in sync
+  const [searchwords, setSearchwords] = useState<string>(initialKeywords) // ✅ Keep search state in sync
   const [listings, setListings] = useState<Listing[]>([])
   const [filteredListings, setFilteredListings] = useState<Listing[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
@@ -60,6 +60,19 @@ const ListingsPage: React.FC<{
     );
     setFilteredListings(filtered);
   };
+
+  const resetFilters = () => {
+    setKeywords("")
+    setSearchwords("")
+    setSelectedCategory(null)
+    setSelectedSubCategory(null)
+    setRateRange([10, 9980])
+    setAgeLimit([2, 90])
+    setSelectedGender(null)
+
+    router.replace("/all/courses") // Replaces the current URL without adding to history
+    router.refresh() // Refresh data in Next.js (App Router)
+  }
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -90,11 +103,13 @@ const ListingsPage: React.FC<{
     handleSearch();
   }, [searchwords]);
 
+
+
   return (
     <>
       <div className="min-h-screen flex flex-col">
         <header className="bg-white shadow">
-          <div className="container mx-auto">
+          <div className="container mx-auto" onClick={resetFilters}>
             <SearchWord keywords={searchwords} setKeywords={setSearchwords} onSearch={handleSearch} />
           </div>
         </header>

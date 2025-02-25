@@ -19,7 +19,7 @@ const SearchWord: React.FC<SearchBarProps> = ({
           type="text"
           value={keywords}
           onChange={(e) => setKeywords(e.target.value)}
-          placeholder="Course Title, Location..."
+          placeholder="Course Title..."
           className="w-full pl-4 pr-20 py-6 shadow-lg rounded-full"
         />
         <Button

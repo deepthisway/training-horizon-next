@@ -28,7 +28,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ keywords, setKeywords, on
           type="text"
           value={keywords}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Course Title, Location..."
+          placeholder="Search Courses..."
           className="w-full pl-4 pr-20 py-6 shadow-lg rounded-full"
         />
         <Button
