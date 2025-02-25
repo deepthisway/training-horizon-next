@@ -20,6 +20,7 @@ interface TrainerData {
   about: string;
   workHistory: string;
   educationDetail: string;
+  imageUrl: string;
 }
 
 const TeacherPf: React.FC = ({
@@ -212,16 +213,16 @@ const TeacherPf: React.FC = ({
             <p className="text-lg md:text-xl font-semibold">
               About {trainer.fname}
             </p>
-            <p className="text-gray-600 mt-2 w-full">{trainer.about}</p>
+            <p className="text-gray-600 mt-2 w-full break-words break-all hyphens-auto">{trainer.about}</p>
             <div className="mt-3">
               <p className="text-lg md:text-xl font-semibold">Work History</p>
-              <p className="text-gray-600 whitespace-pre-line mt-2">
+              <p className="text-gray-600 whitespace-pre-line mt-2 break-words break-all hyphens-auto">
                 {trainer.workHistory}
               </p>
             </div>
             <div className="mt-3">
               <p className="text-lg md:text-xl font-semibold">Education</p>
-              <p className="text-gray-600 mt-2">{trainer.educationDetail}</p>
+              <p className="text-gray-600 mt-2 break-words break-all hyphens-auto">{trainer.educationDetail}</p>
             </div>
           </div>
         </div>

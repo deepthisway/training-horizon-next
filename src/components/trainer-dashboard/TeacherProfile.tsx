@@ -14,16 +14,11 @@ interface TrainerData {
   id: string;
   address: string;
   experience: string;
-  // imageUrl: string;
-  // about: string;
-  // workHistory: string;
+  imageUrl: string;
+  about: string;
+  workHistory: string;
   qualifications: string;
   linkedin: string;
-  // cardData: Array<{
-  //   icon?: React.ReactNode;
-  //   title: string;
-  //   description: string;
-  // }>;
 }
 
 const TeacherProfile: React.FC = ({
@@ -37,8 +32,8 @@ const TeacherProfile: React.FC = ({
   workHistory,
   education,
   linkedin,
-}: // cardData,
-any) => {
+}:
+  any) => {
   const { id } = useParams<{ id: string }>();
   console.log(id);
   const [trainer, setTrainer] = useState<TrainerData | null>(null);

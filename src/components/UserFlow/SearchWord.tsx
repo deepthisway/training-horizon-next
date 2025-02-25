@@ -7,10 +7,10 @@ interface SearchBarProps {
   onSearch?: () => void;
 }
 
-const SearchSection: React.FC<SearchBarProps> = ({
+const SearchWord: React.FC<SearchBarProps> = ({
   keywords = "",
-  setKeywords = () => {},
-  onSearch = () => {},
+  setKeywords = () => { },
+  onSearch = () => { },
 }) => {
   return (
     <section className="bg-white/20 container mx-auto px-4 py-24">
@@ -33,4 +33,4 @@ const SearchSection: React.FC<SearchBarProps> = ({
   );
 };
 
-export default SearchSection;
+export default SearchWord;

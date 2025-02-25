@@ -6,7 +6,7 @@ import TopNavigationBar from "@/components/UserFlow/TopNavigationBar";
 import Testimonials from "@/components/UserFlow/Testimonials";
 import Footer from "@/components/UserFlow/Footer";
 import Navbar from "./NavBar";
-import SearchSection from "./SeachSection";
+import SearchSection from "./SearchSection";
 import TopCourses from "./TopCourses";
 // import VacationCourses from "@/components/UserFlow/VacationCourses";
 
@@ -18,12 +18,12 @@ export default function UserFlow() {
         <Main />
         <SearchSection />
         <Categories />
-      {/* <VacationCourses /> */}
-      {/* <Testimonials /> */}
-      <TopCourses/>
-      <Footer />
+        {/* <VacationCourses /> */}
+        {/* <Testimonials /> */}
+        <TopCourses />
+        <Footer />
       </div>
-      
+
     </div>
   );
 }

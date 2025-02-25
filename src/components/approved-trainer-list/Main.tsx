@@ -10,11 +10,11 @@ interface Trainer {
   lname: string;
   email: string;
   phone: string;
+  imageUrl: string;
 }
 
 
 const Main = () => {
-  // const [trainers, setTrainers] = useState([]);
   const [trainers, setTrainers] = useState<Trainer[]>([]);
   const [keywords, setKeywords] = useState<string>('');
   const [filteredTrainers, setFilteredTrainers] = useState<Trainer[]>([]);
@@ -44,7 +44,7 @@ const Main = () => {
     setFilteredTrainers(filtered);
   }, [keywords, trainers]);
 
-  const handleSearch = useCallback ((searchKeywords: string) => {
+  const handleSearch = useCallback((searchKeywords: string) => {
     // Filter trainers based on the provided search keywords
     const filtered = trainers.filter(trainer => {
       const fullName = `${trainer.fname} ${trainer.lname}`.toLowerCase();
@@ -66,16 +66,16 @@ const Main = () => {
         <div className="w-full">
           <div className="my-4">
             <SearchBar
-              keywords={keywords} 
-              setKeywords={setKeywords} 
+              keywords={keywords}
+              setKeywords={setKeywords}
               onSearch={() => handleSearch(keywords)}
             />
           </div>
           <div className="flex gap-6 flex-wrap justify-evenly">
             {filteredTrainers.length > 0 ? (
-              filteredTrainers.map((trainer,idx) => (
-                <TrainerCard 
-                  key={idx} 
+              filteredTrainers.map((trainer, idx) => (
+                <TrainerCard
+                  key={idx}
                   trainer={trainer} // Pass each trainer data as prop
                 />
               ))

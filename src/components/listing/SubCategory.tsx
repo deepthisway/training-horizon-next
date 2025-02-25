@@ -7,7 +7,7 @@ import ListingCard from "./ListingCard";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import SearchSection from "../UserFlow/SeachSection";
+import SearchSection from "../UserFlow/SearchSection";
 import { Card, CardContent } from "../ui/card";
 
 const SubCategory: React.FC<{ categoryName: string }> = ({ categoryName }) => {
@@ -50,9 +50,9 @@ const SubCategory: React.FC<{ categoryName: string }> = ({ categoryName }) => {
   //   };
   // console.log(listings[0].trainerId);
 
-  
 
-  const handleSearch=()=>{
+
+  const handleSearch = () => {
 
   }
 

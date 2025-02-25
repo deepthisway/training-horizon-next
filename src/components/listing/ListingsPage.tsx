@@ -2,10 +2,10 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import SearchBar from "./SearchBar"
-import ListingCard from "./ListingCard"
+import { useSearchParams, useRouter } from "next/navigation"
 import axios from "axios"
-import SearchSection from "../UserFlow/SeachSection"
+import SearchWord from "../UserFlow/SearchWord"
+import ListingCard from "./ListingCard"
 
 interface Listing {
   _id: string
@@ -37,23 +37,29 @@ const ListingsPage: React.FC<{
   categoryName: string
   subCategoryName: string
 }> = ({ categoryName, subCategoryName }) => {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
+  // Get search term from URL params
+  const initialKeywords = searchParams.get("keywords") || ""
+
+  const [keywords, setKeywords] = useState<string>(initialKeywords)
+  const [searchwords, setSearchwords] = useState<string>("") // ✅ Keep search state in sync
   const [listings, setListings] = useState<Listing[]>([])
-  const [keywords, setKeywords] = useState<string>("")
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [filteredListings, setFilteredListings] = useState<Listing[]>(listings)
+  const [filteredListings, setFilteredListings] = useState<Listing[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null)
   const [RateRange, setRateRange] = useState<[number, number]>([10, 9980])
   const [ageLimit, setAgeLimit] = useState<[number, number]>([2, 90])
   const [selectedGender, setSelectedGender] = useState<string | null>(null)
-  const [get, set] = useState<boolean>(false)
 
   const handleSearch = () => {
+
     const filtered = listings.filter(
-      (listing) => keywords === "" || listing.title.toLowerCase().includes(keywords.toLowerCase()),
-    )
-    setFilteredListings(filtered)
-  }
+      (listing) => searchwords === "" || listing.title.toLowerCase().includes(searchwords.toLowerCase())
+    );
+    setFilteredListings(filtered);
+  };
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -80,32 +86,18 @@ const ListingsPage: React.FC<{
     fetchCourses()
   }, [keywords, selectedCategory, selectedSubCategory, RateRange, ageLimit, selectedGender])
 
+  useEffect(() => {
+    handleSearch();
+  }, [searchwords]);
+
   return (
     <>
       <div className="min-h-screen flex flex-col">
         <header className="bg-white shadow">
-          <div className="container mx-auto ">
-            <SearchSection keywords={keywords} setKeywords={setKeywords} onSearch={handleSearch} />
+          <div className="container mx-auto">
+            <SearchWord keywords={searchwords} setKeywords={setSearchwords} onSearch={handleSearch} />
           </div>
         </header>
-
-        {/* <FilterSortBar
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
-          onFilter={handleSearch}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          selectedSubCategory={selectedSubCategory}
-          setSelectedSubCategory={setSelectedSubCategory}
-          RateRange={RateRange}
-          setRateRange={setRateRange}
-          ageLimit={ageLimit}
-          setAgeLimit={setAgeLimit}
-          selectedGender={selectedGender}
-          setSelectedGender={setSelectedGender}
-          get={get}
-          set={set}
-        /> */}
 
         <div className="container mx-auto flex flex-1 px-4">
           <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -150,4 +142,3 @@ const ListingsPage: React.FC<{
 }
 
 export default ListingsPage
-

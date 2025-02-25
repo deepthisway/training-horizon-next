@@ -17,7 +17,8 @@ const signUpSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters long"),
   about: z.string().min(1),
   workHistory: z.string().min(1),
-  educationDetail: z.string().min(1)
+  educationDetail: z.string().min(1),
+  imageUrl: z.string().min(1)
 });
 
 const loginSchema = z.object({
@@ -45,10 +46,10 @@ exports.signUpTrainer = async (req, res) => {
     await trainer.save();
 
     // Generate JWT
-    const token = jwt.sign({ 
-                id: trainer._id, 
-                role: "trainer"
-              }, process.env.JWT_SECRET, {
+    const token = jwt.sign({
+      id: trainer._id,
+      role: "trainer"
+    }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
