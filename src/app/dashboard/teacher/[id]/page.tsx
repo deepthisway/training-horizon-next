@@ -23,19 +23,9 @@ interface TrainerData {
 }
 
 const TeacherPf: React.FC = ({
-  name,
-  email,
-  mobileNo,
-  teacherId,
-  location,
-  imageUrl,
-  about,
-  workHistory,
-  education,
-  linkedin,
 }: any) => {
   const { id } = useParams<{ id: string }>();
-  console.log(id);
+  const [getImageUrl, setImageUrl] = useState("/img/loading.gif");
   const [trainer, setTrainer] = useState<TrainerData | null>(null);
   useEffect(() => {
     const fetchData = async () => {
@@ -45,12 +35,26 @@ const TeacherPf: React.FC = ({
         );
         // console.log(response.data.trainer);
         setTrainer(response.data.trainer);
-        // console.log(data);
+        fetchImage(response.data.trainer.imageUrl)
+
       } catch (error) {
         console.log("error");
       }
     };
 
+    const fetchImage = async (imageUrl: string) => {
+      try {
+        const response2 = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/upload?imageUrl=${imageUrl}`
+        );
+        if (!response2.ok) throw new Error("Failed to fetch signed URL");
+
+        const data = await response2.json();
+        setImageUrl(data.signedUrl);
+      } catch (error) { }
+
+
+    }
     fetchData();
   }, [id]);
 
@@ -76,7 +80,7 @@ const TeacherPf: React.FC = ({
             <Image
               alt="Teacher"
               className="rounded-full h-[180px] w-[180px] md:h-[230px] md:w-[230px] mx-auto mb-5 object-cover"
-              src={trainer.imageUrl}
+              src={getImageUrl}
               width={230}
               height={230}
             />

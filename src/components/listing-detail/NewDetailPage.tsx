@@ -55,6 +55,7 @@ interface TrainerData {
   experience: string;
   qualifications: string;
   avgRating: number;
+  imageUrl: string;
 }
 
 interface InstructorsPageProps {
@@ -70,6 +71,7 @@ const NewDetailPage: React.FC<ListingId> = ({
   const [favorites, setFavorites] = useState<string[]>([]);
   const form = useSelector((state: RootState) => state.form);
   const [isSelected, setIsSelected] = useState<boolean>(form.isFavorite);
+  const [getTrainerImageUrl, setTrainerImageUrl] = useState("/img/loading.gif");
 
   const [getImageUrl, setImageUrl] = useState<string>("/img/loading.gif");
 
@@ -103,7 +105,7 @@ const NewDetailPage: React.FC<ListingId> = ({
       }
     };
 
-    const fetchImage = async () => {
+    const fetchListingImage = async () => {
       try {
         const response2 = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/upload?imageUrl=${listingData.imageUrl}`
@@ -113,14 +115,29 @@ const NewDetailPage: React.FC<ListingId> = ({
         const data = await response2.json();
         setImageUrl(data.signedUrl);
         console.log(getImageUrl);
-      } catch (error) {}
+      } catch (error) { }
+    };
+
+    const fetchTrainerImage = async () => {
+      try {
+        console.log(instructorData)
+        const response2 = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/upload?imageUrl=${instructorData.imageUrl}`
+        );
+        if (!response2.ok) throw new Error("Failed to fetch signed URL");
+
+        const data = await response2.json();
+        setTrainerImageUrl(data.signedUrl);
+      } catch (error) { }
     };
 
     console.log("Image url : ", getImageUrl);
 
     fetchFavorites();
-    fetchImage();
-  }, [listingData.listingId, listingData.imageUrl]);
+    fetchListingImage();
+    fetchTrainerImage();
+
+  }, [listingData.listingId, listingData.imageUrl, instructorData.imageUrl]);
   function formatDays(days: string[]) {
     return days?.map((day) => day.replace(/([A-Z][a-z]+)/g, " $1")).join(", ");
   }
@@ -228,7 +245,7 @@ const NewDetailPage: React.FC<ListingId> = ({
               </div>
 
               <div className="flex items-center font-bold">
-                <FaLocationPin className="mr-2"/>
+                <FaLocationPin className="mr-2" />
                 <span>Mode: {listingData.mode}</span>
               </div>
               <div className="flex items-center font-bold">
@@ -261,13 +278,15 @@ const NewDetailPage: React.FC<ListingId> = ({
       <div className="border p-4 rounded-lg shadow-md flex flex-col">
         <h2 className="mb-3 text-3xl font-bold">About Instructor</h2>
         <div className="p-4 rounded-lg flex items-center gap-10">
-          <Image
-            src="/img/new/user.jpg"
-            alt="Instructor"
-            width={100}
-            height={100}
-            className="rounded-full"
-          />
+          <div className="">
+            <Image
+              src={getTrainerImageUrl}
+              alt="Instructor"
+              width={200}
+              height={200}
+              className="rounded-lg object-fill"
+            />
+          </div>
           <div>
             <div>
               <h3 className="text-lg font-semibold">
