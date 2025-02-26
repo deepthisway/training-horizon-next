@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store/store";
+import { Skeleton } from "@/components/ui/skeleton";
 // import router from "next/router";
 import { useRouter } from "next/navigation";
 import Listing from "../show_all_listings/Listing";
@@ -59,8 +60,8 @@ const NewDetailPage: React.FC<ListingId> = ({
   const [favorites, setFavorites] = useState<string[]>([]);
   const form = useSelector((state: RootState) => state.form);
   const [isSelected, setIsSelected] = useState<boolean>(form.isFavorite);
-
-  const [getImageUrl, setImageUrl] = useState<string>("/img/animation2.gif");
+  const [isLoading, setIsLoading] = useState(true);
+  const [getImageUrl, setImageUrl] = useState<string>("");
 
   useEffect(() => {
     const fetchFavorites = async () => {
@@ -94,6 +95,7 @@ const NewDetailPage: React.FC<ListingId> = ({
 
     const fetchImage = async () => {
       try {
+        setIsLoading(true);
         const response2 = await fetch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/upload?imageUrl=${listingData.imageUrl}`
         );
@@ -101,8 +103,10 @@ const NewDetailPage: React.FC<ListingId> = ({
 
         const data = await response2.json();
         setImageUrl(data.signedUrl);
-        console.log(getImageUrl);
-      } catch (error) {}
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      }
     };
 
     console.log("Image url : ", getImageUrl);
@@ -178,7 +182,13 @@ const NewDetailPage: React.FC<ListingId> = ({
       {/* Header */}
       <div className="">
         <div className="w-[800px] h-[400px] relative overflow-hidden rounded-lg">
-          <Image src={getImageUrl} alt="img" layout="fill" objectFit="cover" />
+          {isLoading ? (
+            <div className="w-full h-full">
+              <Skeleton className="w-full h-full" />
+            </div>
+          ) : (
+            <Image src={getImageUrl} alt="img" layout="fill" objectFit="cover" />
+          )}
         </div>
 
         <div className="md:col-span-2 space-y-4">

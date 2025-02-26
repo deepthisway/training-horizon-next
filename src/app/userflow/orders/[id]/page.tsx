@@ -163,7 +163,7 @@ const MyOrders: React.FC = () => {
                   <Link
                     className="text-blue-600"
                     href={`/userflow/orderdetails/${order._id}`}
-                  >pp
+                  >
                     {" "}
                     View
                   </Link>
