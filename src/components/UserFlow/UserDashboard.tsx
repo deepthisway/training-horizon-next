@@ -181,9 +181,9 @@ useEffect(() => {
               {userName || "Loading..."}
             </span>
             <img
-              src="https://github.com/shadcn.png"
+              src="/img/new/user.jpg" // this should come from s3 
               alt="Profile"
-              className="h-8 w-8 rounded-full"
+              className="h-8 w-8 rounded-full object-cover"
             />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-52">

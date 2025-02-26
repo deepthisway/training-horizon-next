@@ -144,7 +144,7 @@ const SubCategory: React.FC<{ categoryName: string }> = ({ categoryName }) => {
                   }}
                 >
                   <img
-                    src={"/img/new/dance.svg"}
+                    src={`/img/new/${subCategory}.jpg`}
                     alt={"abc"}
                     className="w-full h-[300px] object-cover rounded-t-lg"
                   />

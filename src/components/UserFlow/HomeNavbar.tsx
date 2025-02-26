@@ -58,11 +58,14 @@ const Navbar = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="text-2xl px-5 font-mono font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
+          <div className="text-2xl px-5 font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
             <Link href="/">Make Me Pro</Link>
           </div>
 
           <div className="flex space-x-6">
+          {/* <Link href="/" className="hidden md:flex text-gray-700 hover:underline">
+              Home
+            </Link> */}
             <Link href="/all/courses" className="hidden md:flex text-gray-700 hover:underline">
               Courses
             </Link>
