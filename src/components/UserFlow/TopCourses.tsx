@@ -108,9 +108,16 @@ export default function TopCourses() {
     }
   }, [listings]);
 
-  const sortedListings = [...listings]
-    .sort((a, b) => b.avgRating - a.avgRating)
-    .slice(0, 6);
+  // const sortedListings = [...listings]
+  //   .sort((a, b) => b.avgRating - a.avgRating)
+  //   .slice(0, 6);
+
+  const getRandomListings = (listings: Listing[], count: number) => {
+    const shuffled = [...listings].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+  };
+
+  const randomListings = getRandomListings(listings, 6);
 
   return (
     <section className="bg-white/40 container mx-auto px-4 py-12">
@@ -123,7 +130,7 @@ export default function TopCourses() {
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        {sortedListings.map((listing) => (
+        {randomListings.map((listing) => (
           <div
             key={listing._id}
             onClick={() => {
