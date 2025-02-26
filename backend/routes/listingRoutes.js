@@ -51,7 +51,7 @@ const postListingSchema = zod.object({
   description: zod.string(),
 });
 listingRouter.get("/listing", async function (req, res) {
-  const listings = await Listing.find({ isApproved: true });
+  const listings = await Listing.find({ isApproved: true }).populate({ path: "trainerId" });
   res.status(200).json(listings);
 });
 
