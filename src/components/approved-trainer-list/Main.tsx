@@ -68,7 +68,7 @@ const Main = () => {
     <div className="flex flex-col items-center pt-5 min-h-screen bg-background">
       <div className="w-full max-w-[1296px] px-4  space-y-6">
         <h2 className="text-5xl font-bold text-center">
-          Our <span className="text-blue-500">Trainers</span>
+          Our <span className="text-blue-600">Trainers</span>
         </h2>
         <hr className="w=full border-2 border-sky-500" />
         <div className="w-full">

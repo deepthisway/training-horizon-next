@@ -64,16 +64,17 @@ function LoginCard() {
 
   return (
     <main className="h-screen flex items-center justify-center p-5 sm:p-10 w-full overflow-hidden">
-      <div className="flex w-full gap-1 max-w-4xl">
+      <div className="flex w-full gap-6 max-w-4xl">
         {/* Image Section */}
-        <div className="w-1/2 hidden  lg:block">
+        <div className="w-1/3 hidden lg:block">
           <Image
-            src="/img/new/image.png"
+            src="/Logo/MMP.png"
             alt="Login Image"
             width={600}
             height={600}
             className="w-full h-full rounded-l-lg shadow-lg object-cover "
           />
+          {/* Welcome Back */}
         </div>
 
         {/* Form Section */}
@@ -151,7 +152,9 @@ function LoginCard() {
                 </Link>
               </div>
             </CardFooter>
+            <div className="flex justify-center">
             <GoogleAuth />
+            </div>
           </Card>
         </div>
       </div>

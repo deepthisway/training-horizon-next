@@ -23,7 +23,7 @@ export default function UserFlow() {
       <div className="bg-[url('/img/new/displayBackground.svg')] bg-cover bg-center h-screen w-full">
         <Navbar />
         <Main />
-        <SearchWord keywords={keywords} setKeywords={setKeywords} onSearch={handleSearch} />
+        {/* <SearchWord keywords={keywords} setKeywords={setKeywords} onSearch={handleSearch} /> */}
         <Categories />
         <TopCourses />
         <Footer />

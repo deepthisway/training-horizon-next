@@ -91,7 +91,7 @@ export default function TopCourses() {
 
   return (
     <section className="bg-white/40 container mx-auto px-4 py-12">
-      <h2 className="text-4xl font-bold text-center">
+      <h2 className="text-4xl font-bold text-center mb-5">
         Top <span className="text-blue-600">Courses</span>
       </h2>
       <p className="text-center text-gray-500 mt-2 mb-12">
@@ -151,7 +151,7 @@ export default function TopCourses() {
                       alt="Profile"
                       className="h-8 w-8 rounded-full object-cover"
                     />
-                    <span className="font-medium">Trainer's name</span>
+                    <span className="font-medium">{listing.trainerId}</span>
                   </div>
                 </div>
               </div>
@@ -166,7 +166,7 @@ export default function TopCourses() {
             router.push(`/all/courses`);
           }}
           variant="outline"
-          className="px-8 bg-blue-500 hover:bg-blue-600 text-black"
+          className="px-8 bg-blue-600 hover:bg-blue-600 text-black"
         >
           Load more listing
         </Button>

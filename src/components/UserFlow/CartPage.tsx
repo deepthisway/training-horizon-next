@@ -214,13 +214,13 @@ const CartPage = () => {
             key={index}
             className="flex items-start gap-4 p-6 border-b last:border-none"
           >
-            <Image
+            {/* <Image
               src={"/img/p1.svg"}
               alt={item.listing.title}
               height={32}
               width={32}
               className="w-32 h-32 p-2 object-cover border rounded-md"
-            />
+            /> */}
             <div className="flex-1">
               <h3 className="text-lg font-semibold">{item.listing.title}</h3>
               <p className="text-gray-600">Size: {item.listing.classSize}</p>

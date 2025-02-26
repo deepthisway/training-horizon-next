@@ -289,7 +289,7 @@ const NewDetailPage: React.FC<ListingId> = ({
           </div>
           <button
             onClick={() => handleViewProfile(instructorData._id)}
-            className="ml-auto px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            className="ml-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-600"
           >
             View Profile
           </button>

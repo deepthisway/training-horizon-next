@@ -180,7 +180,7 @@ function SideLayout({
             </label>
           ))}
             <p className="text-sm text-gray-600 mb-2">
-  ( Note * Only eligible members within the age range of {minAgeLimit} to {maxAgeLimit} are displayed.)
+  Note: Only eligible members within the age range of {minAgeLimit} to {maxAgeLimit} can enroll in this listing
 </p>
 
       </div>
@@ -189,7 +189,7 @@ function SideLayout({
         onClick={handleAddToCart}
         disabled={selectedMembers.length === 0}
         className={`w-full py-2 flex items-center justify-center rounded-lg text-white transition ${
-          selectedMembers.length > 0 ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-300 cursor-not-allowed"
+          selectedMembers.length > 0 ? "bg-blue-600 hover:bg-blue-600" : "bg-gray-300 cursor-not-allowed"
         }`}
       >
         <ShoppingCart size={20} className="mr-2" /> Add To Cart
@@ -242,7 +242,7 @@ function SideLayout({
               <button onClick={() => setIsOpen(false)} className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-md">
                 Cancel
               </button>
-              <button onClick={handleSubmit} className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md">Send</button>
+              <button onClick={handleSubmit} className="px-4 py-2 bg-blue-600 hover:bg-blue-600 text-white rounded-md">Send</button>
             </div>
           </div>
         </div>
