@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 type ListingDetails = {
@@ -48,6 +49,7 @@ const CartPage = () => {
   const [cartCount, setCartCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   // Fetch cart from backend
   useEffect(() => {
@@ -142,13 +144,14 @@ const CartPage = () => {
 
     try {
       setLoading(true);
+      // Create new order
       const orderResponse = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/order/checkout`,
         orderData,
         { headers: { Authorization: "Bearer " + token } }
       );
       if (orderResponse.status === 201) {
-        alert("Order created successfully!");
+        // Extract the new order's ID.
         const newOrderId = orderResponse.data._id;
         // Update user's orders array
         await axios.put(
@@ -156,13 +159,16 @@ const CartPage = () => {
           { orderId: newOrderId },
           { headers: { Authorization: "Bearer " + token } }
         );
-        // Clear the cart
+        // Clear the cart on the server.
         await axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/user/cart/clear`, {
           headers: { Authorization: "Bearer " + token },
         });
+        // Update local state.
         setCartItems([]);
         setCartCount(0);
         window.dispatchEvent(new Event("cart-updated"));
+        // Redirect to the new order details page.
+        router.push(`/userflow/orderdetails/${newOrderId}`);
       }
     } catch (error: any) {
       console.error("Error creating order:", error.response?.data || error);
@@ -170,15 +176,12 @@ const CartPage = () => {
     } finally {
       setLoading(false);
     }
-    
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-xl text-gray-600">
-          Loading...
-        </p>
+        <p className="text-xl text-gray-600">Loading...</p>
       </div>
     );
   }
@@ -186,9 +189,7 @@ const CartPage = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-xl text-red-500">
-          {error}
-        </p>
+        <p className="text-xl text-red-500">{error}</p>
       </div>
     );
   }

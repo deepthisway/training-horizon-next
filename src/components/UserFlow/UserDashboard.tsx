@@ -200,9 +200,10 @@ useEffect(() => {
                 <DropdownMenuItem className="py-3" onClick={goToFavorites}>
                   Favorites
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild className="py-3">
-                  <Link href={`/userflow/orders/${userId}`}>Orders</Link>
-                </DropdownMenuItem>
+                {/* Removed orders dropdown */}
+                {/* <DropdownMenuItem asChild className="py-3">
+                  <Link href={`/userflow/orders`}>Orders</Link>
+                </DropdownMenuItem> */}
                 <DropdownMenuItem asChild className="py-3">
                   <Link href="/userflow/registerMember">Register Member</Link>
                 </DropdownMenuItem>
