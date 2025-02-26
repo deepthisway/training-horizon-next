@@ -1,63 +1,78 @@
-"use client";
+"use client"
 
-import type React from "react";
-import { useState, useEffect } from "react";
-import SearchBar from "./SearchBar";
-import ListingCard from "./ListingCard";
-import axios from "axios";
-import SearchSection from "../UserFlow/SeachSection";
+import type React from "react"
+import { useState, useEffect } from "react"
+import { useSearchParams, useRouter } from "next/navigation"
+import axios from "axios"
+import SearchSection from "../UserFlow/SearchSection"
+import ListingCard from "./ListingCard"
 
 interface Listing {
-  _id: string;
-  category: string;
-  title: string;
-  imageUrl: string;
-  priceMode: string;
-  price: string;
-  mode: string;
-  location: string;
-  quantity: string;
-  classSize: string;
-  startDate: string;
-  endDate: string;
-  days: string;
-  gender: string;
-  startTime: string;
-  endTime: string;
-  minAge: string;
-  maxAge: string;
-  description: string;
-  trainerId: string;
-  listingId: string;
-  isFavorite: boolean;
-  avgRating: number;
+  _id: string
+  category: string
+  title: string
+  imageUrl: string
+  priceMode: string
+  price: string
+  mode: string
+  location: string
+  quantity: string
+  classSize: string
+  startDate: string
+  endDate: string
+  days: string
+  gender: string
+  startTime: string
+  endTime: string
+  minAge: string
+  maxAge: string
+  description: string
+  trainerId: string
+  listingId: string
+  isFavorite: boolean
+  avgRating: number
 }
 
 const ListingsPage: React.FC<{
-  categoryName: string;
-  subCategoryName: string;
+  categoryName: string
+  subCategoryName: string
 }> = ({ categoryName, subCategoryName }) => {
-  const [listings, setListings] = useState<Listing[]>([]);
-  const [keywords, setKeywords] = useState<string>("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [filteredListings, setFilteredListings] = useState<Listing[]>(listings);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(
-    null
-  );
-  const [RateRange, setRateRange] = useState<[number, number]>([10, 9980]);
-  const [ageLimit, setAgeLimit] = useState<[number, number]>([1, 90]);
-  const [selectedGender, setSelectedGender] = useState<string | null>(null);
-  const [get, set] = useState<boolean>(false);
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
+  // Get search term from URL params
+  const initialKeywords = searchParams.get("keywords") || ""
+
+  const [keywords, setKeywords] = useState<string>(initialKeywords)
+  const [searchwords, setSearchwords] = useState<string>(initialKeywords)
+  const [listings, setListings] = useState<Listing[]>([])
+  const [filteredListings, setFilteredListings] = useState<Listing[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string | null>(null)
+  const [RateRange, setRateRange] = useState<[number, number]>([10, 9980])
+  const [ageLimit, setAgeLimit] = useState<[number, number]>([2, 90])
+  const [selectedGender, setSelectedGender] = useState<string | null>(null)
 
   const handleSearch = () => {
+
     const filtered = listings.filter(
-      (listing) =>
-        keywords === "" ||
-        listing.title.toLowerCase().includes(keywords.toLowerCase())
+      (listing) => searchwords === "" || listing.title.toLowerCase().includes(searchwords.toLowerCase())
     );
     setFilteredListings(filtered);
   };
+
+  const resetFilters = () => {
+    setKeywords("")
+    setSearchwords("")
+    setSelectedCategory(null)
+    setSelectedSubCategory(null)
+    setRateRange([10, 9980])
+    setAgeLimit([2, 90])
+    setSelectedGender(null)
+
+    router.replace("/all/courses") // Replaces the current URL without adding to history
+    router.refresh() // Refresh data in Next.js (App Router)
+  }
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -73,57 +88,33 @@ const ListingsPage: React.FC<{
       }).toString();
 
       try {
-        const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/listing/listing/?${query}`
-        );
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/listing/listing/?${query}`);
         setListings(data);
-        console.log(data);
-        setFilteredListings(data);
+        setFilteredListings(data); // Ensure data is initially set
+        handleSearch(); // Apply search filter immediately after fetching data
       } catch (error) {
         console.error("Failed to fetch listings:", error);
       }
     };
 
     fetchCourses();
-  }, [
-    keywords,
-    selectedCategory,
-    selectedSubCategory,
-    RateRange,
-    ageLimit,
-    selectedGender,
-  ]);
+  }, [keywords, selectedCategory, selectedSubCategory, RateRange, ageLimit, selectedGender]);
+
+  // Ensure filtering also works on searchwords update
+  useEffect(() => {
+    handleSearch();
+  }, [searchwords, listings]);
+
+
 
   return (
     <>
       <div className="min-h-screen flex flex-col">
         <header className="bg-white shadow">
-          <div className="container mx-auto ">
-            <SearchSection
-              keywords={keywords}
-              setKeywords={setKeywords}
-              onSearch={handleSearch}
-            />
+          <div className="container mx-auto" onClick={resetFilters}>
+            <SearchSection keywords={searchwords} setKeywords={setSearchwords} onSearch={handleSearch} />
           </div>
         </header>
-
-        {/* <FilterSortBar
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
-          onFilter={handleSearch}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          selectedSubCategory={selectedSubCategory}
-          setSelectedSubCategory={setSelectedSubCategory}
-          RateRange={RateRange}
-          setRateRange={setRateRange}
-          ageLimit={ageLimit}
-          setAgeLimit={setAgeLimit}
-          selectedGender={selectedGender}
-          setSelectedGender={setSelectedGender}
-          get={get}
-          set={set}
-        /> */}
 
         <div className="container mx-auto flex flex-1 px-4">
           <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -164,7 +155,7 @@ const ListingsPage: React.FC<{
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ListingsPage;
+export default ListingsPage

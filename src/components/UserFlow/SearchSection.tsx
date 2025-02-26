@@ -9,8 +9,8 @@ interface SearchBarProps {
 
 const SearchSection: React.FC<SearchBarProps> = ({
   keywords = "",
-  setKeywords = () => {},
-  onSearch = () => {},
+  setKeywords = () => { },
+  onSearch = () => { },
 }) => {
   return (
     <section className="bg-white/20 container mx-auto px-4 py-10">

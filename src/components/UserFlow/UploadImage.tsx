@@ -1,6 +1,6 @@
-import axios from "axios";
-import Image from "next/image";
-import React, { useState } from "react";
+import axios from 'axios';
+import Image from 'next/image';
+import React, { useState } from 'react';
 
 interface Prop {
   imageUrl: string | null;
@@ -21,36 +21,32 @@ const UploadImage: React.FC<Prop> = ({ imageUrl, setImageUrl }) => {
 
   const handleUpload = async (file: File) => {
     const formData = new FormData();
-    formData.append("image", file);
+    formData.append('image', file);
 
     try {
       setLoading(true);
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/upload`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/upload`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
 
       setImageUrl(response.data.imageUrl);
-      const response2 = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/upload-temp?imageUrl=${response.data.imageUrl}`
-      );
-      if (!response2.ok) throw new Error("Failed to fetch signed URL");
+      const response2 = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/upload-temp?imageUrl=${response.data.imageUrl}`);
+      if (!response2.ok) throw new Error('Failed to fetch signed URL');
       const data = await response2.json();
       setSignedUrl(data.signedUrl);
-      console.log(signedUrl);
+      console.log(signedUrl)
     } catch (error) {
-      console.error("Error uploading file:", error);
-      alert("Failed to upload file: " + error);
+      console.error('Error uploading file:', error);
+      alert('Failed to upload file: ' + error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center p-3 rounded-md border border-gray-600 shadow-sm bg-white w-full">
+    <div className="flex flex-col items-start p-3 rounded-md border border-gray-300 shadow-sm bg-white w-full">
+      <p className='text-lg font-bold'>Upload Image</p>
+      <br />
       <input
         type="file"
         accept="image/*"
@@ -59,13 +55,7 @@ const UploadImage: React.FC<Prop> = ({ imageUrl, setImageUrl }) => {
       />
       {signedUrl && (
         <div className="mt-3 w-full flex justify-center">
-          <Image
-            src={signedUrl}
-            alt="Uploaded"
-            height={100}
-            width={150}
-            className="rounded-md shadow-sm"
-          />
+          <Image src={signedUrl} alt="Uploaded" height={100} width={150} className="rounded-md shadow-sm" />
         </div>
       )}
     </div>
