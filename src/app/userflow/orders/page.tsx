@@ -84,7 +84,10 @@ export interface Listing {
 }
 
 const MyOrders: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const id =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("userId")
+      : null;
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -98,9 +101,13 @@ const MyOrders: React.FC = () => {
             id.toString()
         );
         console.log("order detail:", response.data.orders);
-        const fetchedOrders = response.data.orders.map((order: Order) => ({
-          ...order,
-        }));
+        const fetchedOrders = response.data.orders
+          .map((order: Order) => ({ ...order }))
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          ); // Sort latest first
+
         setOrders(fetchedOrders);
       } catch (err: any) {
         setError(err.response?.data?.message || "Something went wrong");
@@ -131,9 +138,9 @@ const MyOrders: React.FC = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="container h-[31rem] mx-auto p-6">
-        <h1 className="text-3xl font-bold mb-6">My Orders</h1>
+      <div className="flex-1 p-10 bg-white rounded-lg shadow-md space-y-6 w-full">
+      <div className="container min-h-[31rem] mx-auto p-6">
+        <h1 className="text-3xl font-bold mb-6">My Purchases</h1>
         <table className="min-w-full table-auto">
           <thead>
             <tr className="bg-gray-100 text-left">
@@ -173,7 +180,7 @@ const MyOrders: React.FC = () => {
           </tbody>
         </table>
       </div>
-      <Footer />
+      </div>
     </>
   );
 };
